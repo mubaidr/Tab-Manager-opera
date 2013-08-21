@@ -1,0 +1,1 @@
+//blank in order for the extension to work with secure and private tabs, otherwise the setting wont show up in preferences.

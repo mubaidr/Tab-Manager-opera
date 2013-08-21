@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Tab Splitter</title>
+	<meta charset="UTF-8">
+	<style>
+		h1 {
+			text-align:center;
+			font:bold 20px/53px Helvetica, Arial, sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<h1></h1>
+	<p>List of tabs opened in this window</p>
+	<script>
+		window.addEventListener("DOMContentLoaded", function() {
+			opera.extension.postMessage("init");
+		}, false);
+	
+		function splitIt(tabname){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.splitTabs(superlist);
+		}
+		
+		function autoSplit(){
+			opera.extension.postMessage("auto");
+		}
+		
+		function autoGroupTabs(){
+			opera.extension.bgProcess.autoGroupTab();
+		}
+		
+		function ungroupTabs(){
+			opera.extension.bgProcess.ungroupTab();
+		}
+		
+		function unpinTabs(){
+			opera.extension.bgProcess.unpinTab();
+		}
+		
+		function unpinSelTabs(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.unpinSelTab(superlist);
+		}
+		
+		function closeTabs(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.closeSelTabs(superlist);
+		}
+		
+		function pinTabs(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.pinSelTabs(superlist);
+		}
+		
+		function groupTabs(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.groupSelTabs(superlist);
+		}
+		
+		function ungroupSel(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.ungroupSelTabs(superlist);
+		}
+		
+		function privateTabs(){
+			var it = document.getElementById("tabs");
+			var superlist = new Array();
+			for (j = 0; j < it.length; j++){
+				if (it.options[j].selected == true){
+					superlist.push(it.options[j].value);
+				}
+			}
+			opera.extension.bgProcess.privateSelTabs(superlist);
+		}
+		
+		function tabFocus(tabToFocus){
+			opera.extension.bgProcess.tabFocus(tabToFocus);
+		}
+		
+		function showAdv(){
+			this.location.href = 'advance.html';
+		}
+		
+		function performAction(action){
+			var it = document.getElementById("actiontodo");
+			switch(action)//it.value)
+			 {
+			 case 'split':
+				splitIt();
+			    break;
+			 case 'auto':
+				autoSplit();
+			    break;
+			 case 'groupTab':
+				groupTabs();
+			    break;
+			 case 'autoGroup':
+				autoGroupTabs();
+			    break;
+			 case 'ungroup':
+				ungroupTabs();
+			    break;
+			 case 'closeTabs':
+				closeTabs();
+			    break;
+			 case 'pinTabs':
+				pinTabs();
+			    break;
+			case 'unpinSelTabs':
+				unpinSelTabs();
+			    break;
+			case 'unpinTabs':
+				unpinTabs();
+			    break;
+			case 'ungroupSel':
+				ungroupSel();
+			    break;
+			case 'privateTabs':
+				privateTabs();
+			    break;
+			case 'showAdv':
+				showAdv();
+				break;
+			 default:
+			  break;
+			 }
+		}
+		
+		function showTip(btnName){
+			var it = document.getElementById("actiontodo");
+			switch(btnName)//it.value)
+			 {
+			 case 'split':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then splits the selected tabs into a new window.';
+			    break;
+			 case 'auto':
+				document.getElementById("tipsarea").innerHTML = 'Automatically splits ALL tabs in this window into individual windows, by domain of the tabs.';
+			    break;
+			 case 'groupTab':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then puts all selected tabs into a tab group.';
+			    break;
+			 case 'autoGroup':
+				document.getElementById("tipsarea").innerHTML = 'Automatically groups ALL tabs in this window into individual groups, by domain of the tabs.';
+			    break;
+			 case 'ungroup':
+				document.getElementById("tipsarea").innerHTML = 'Ungroups ALL tabs in this window into individual tabs.';
+			    break;
+			 case 'closeTabs':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then closes all selected tabs.';
+			    break;
+			 case 'pinTabs':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then pins all selected tabs.';
+			    break;
+			case 'unpinTabs':
+				document.getElementById("tipsarea").innerHTML = 'Unpins ALL tabs in this window.';
+			    break;
+			case 'unpinSelTabs':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select Pinned tabs, then Unpins Selected tabs in this window.';
+			    break;
+			case 'ungroupSel':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then Ungroups Selected tabs in this window.';
+			    break;
+			case 'privateTabs':
+				document.getElementById("tipsarea").innerHTML = 'Use the Ctrl or Shift key to select tabs, then Privates Selected tabs in this window.';
+			    break;
+			case 'out':
+				document.getElementById("tipsarea").innerHTML = 'Double click on any tab name to immediately switch(focus) to it.';
+			    break;
+			case 'showAdv':
+				document.getElementById("tipsarea").innerHTML = 'Manage opened windows.';
+				break;
+			 default:
+				document.getElementById("tipsarea").innerHTML = 'Double click on any tab name to immediately switch(focus) to it.';
+			  break;
+			 }
+		}
+		
+		var int;
+   
+	</script>
+	
+	<form>
+		<div id="tabitems"></div>
+		<script>
+			var tablistitems = opera.extension.bgProcess.count;
+			var selectbox = "<table><TR><TD><SELECT id='tabs' MULTIPLE size=7 style='width: 405px; height: 500px; background-color:#F5F5F5;'>";
+			for (i = 0; i < tablistitems.length; i++){
+				selectbox += "<OPTION VALUE='"+tablistitems[i].id+"' ondblclick='tabFocus("+tablistitems[i].id+");'></option>";
+			}
+			var buttonItems = "------Tab Splitting------</br></br>";
+			buttonItems += "<button onClick='performAction(\"split\")' onmouseover='showTip(\"split\")' onmouseout='showTip(\"out\")'>Split Selected tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"auto\")' onmouseover='showTip(\"auto\")' onmouseout='showTip(\"out\")'>Auto-Split Tabs</button></br>";
+			buttonItems += "</br>------Tab Grouping------</br></br>";
+			buttonItems += "<button onClick='performAction(\"groupTab\")' onmouseover='showTip(\"groupTab\")' onmouseout='showTip(\"out\")'>Group Selected Tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"autoGroup\")' onmouseover='showTip(\"autoGroup\")' onmouseout='showTip(\"out\")'>Auto Group All Tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"ungroupSel\")' onmouseover='showTip(\"ungroupSel\")' onmouseout='showTip(\"out\")'>Ungroup Selected Tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"ungroup\")' onmouseover='showTip(\"ungroup\")' onmouseout='showTip(\"out\")'>UnGroup All Tabs</button></br>";
+			buttonItems += "</br>------Tab Pinning------</br></br>";
+			buttonItems += "<button onClick='performAction(\"pinTabs\")' onmouseover='showTip(\"pinTabs\")' onmouseout='showTip(\"out\")'>Pin Selected Tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"unpinSelTabs\")' onmouseover='showTip(\"unpinSelTabs\")' onmouseout='showTip(\"out\")'>UnPin Selected Tabs</button></br>";
+			buttonItems += "<button onClick='performAction(\"unpinTabs\")' onmouseover='showTip(\"unpinTabs\")' onmouseout='showTip(\"out\")'>UnPin All Tabs</button></br>";
+			buttonItems += "</br>------Private Tabs------</br></br>";
+			buttonItems += "<button onClick='performAction(\"privateTabs\")' onmouseover='showTip(\"privateTabs\")' onmouseout='showTip(\"out\")'>Private Selected Tabs</button></br>";
+			buttonItems += "</br>------Tab Closing------</br></br>";
+			buttonItems += "<button onClick='performAction(\"closeTabs\")' onmouseover='showTip(\"closeTabs\")' onmouseout='showTip(\"out\")'>Close Selected Tabs</button></br>";			
+			//buttonItems += "<button onClick='performAction(\"showAdv\")' onmouseover='showTip(\"showAdv\")' onmouseout='showTip(\"out\")'>Advanced Options</button></br>";			
+			//buttonItems += "<br><a href='advance.html' onmouseover='showTip(\"showAdv\")' onmouseout='showTip(\"out\")'>Window Management</a></br>";
+			document.write(selectbox+"</select></td><td valign='top'>"+buttonItems+"</td></tr></table>");
+			var sel = document.getElementById("tabs");
+			var tabGrp = "";
+			for (k = 0; k < sel.length; k++){
+				//if (tablistitems[k].tabGroup){
+				//	tabGrp = "Tab Group: " + tablistitems[k].tabGroup.id;
+				//}
+				//else{tabGrp = "";}
+				sel.options[k].text = tablistitems[k].title; // + " " + tabGrp;
+			}
+		</script>
+		<!--
+		<select id='actiontodo'  onchange="showTip()" >
+		   <option value="split">Split Selected tabs</option>
+		   <option value="auto">Auto-Split Tabs</option>
+		   <option value="groupTab">Group Selected Tabs</option>
+		   <option value="autoGroup">Auto Group All Tabs</option>
+		   <option value="ungroup">UnGroup All Tabs</option>
+		   <option value="closeTabs">Close Selected Tabs</option>
+		   <option value="pinTabs">Pin Selected Tabs</option>
+		   <option value="unpinTabs">UnPin All Tabs</option>
+		 </select>
+		 <button  onClick="performAction()">Perform</button>  -->
+		 <div id="tipsarea">Double click on any tab name to immediately switch(focus) to it.</div>
+		
+	</form>
+</body>
+</html>
