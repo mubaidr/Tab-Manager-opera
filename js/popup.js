@@ -6,7 +6,9 @@ window.onload = function () {
 };
 
 function loadData() {
-	chrome.windows.getAll({ populate: true }, function (windows) {
+	chrome.windows.getAll({
+		populate : true
+	}, function (windows) {
 		$('#tab_container').html('');
 		for (var i = 0; i < windows.length; i++) {
 			//log(windows[i]);
@@ -15,7 +17,7 @@ function loadData() {
 			addToList(win.id, 'Window');
 			for (var j = 0; j < tabs.length; j++) {
 				var tab = tabs[j];
-				//log(tab);				
+				//log(tab);
 				addToList(tab.id, 'Tab', win.id, tab);
 			}
 		}
@@ -32,22 +34,23 @@ function addToList(id, type, parent_id, object) {
 	$(li).append(h4);
 	attachEvents(h4);
 	switch (type) {
-		case 'Window':
-			li.id = id + '_liw';
-			$(h4).addClass('window');
-			$(h4).html(type);
-			var ul = document.createElement('ul');
-			$(li).append(ul);
-			$('#tab_container').append(li);
-			break;
-		case 'Tab':
-			li.id = id + '_lit';
-			$(h4).addClass('tab');
-			h4.title = object.url;
-			$(h4).html(object.title);
-			$('#' + parent_id + '_liw ul').append(li);
-			break;
-		default: break;
+	case 'Window':
+		li.id = id + '_liw';
+		$(h4).addClass('window');
+		$(h4).html(type);
+		var ul = document.createElement('ul');
+		$(li).append(ul);
+		$('#tab_container').append(li);
+		break;
+	case 'Tab':
+		li.id = id + '_lit';
+		$(h4).addClass('tab');
+		h4.title = object.url;
+		$(h4).html(object.title);
+		$('#' + parent_id + '_liw ul').append(li);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -55,25 +58,29 @@ function attachEvents(item) {
 	//Enable selection
 	$(item).on('click', function () {
 		var tab = event.target;
-		if (tab.type !== prev_type) {
-			prev_type = tab.type;
-			//Unselect all previous and select new
-			$('h4').removeClass('selected');
+		if (!activeMove) {
+			if (tab.type !== prev_type) {
+				prev_type = tab.type;
+				//Unselect all previous and select new
+				$('h4').removeClass('selected');
+			}
+			$(tab).toggleClass('selected');
+		} else {
+			if (tab.type === 'Window') {
+				splitSelected(true, tab.id)
+			}
 		}
-		$(tab).toggleClass('selected');
-	});
-	$(item).on('button2', function () {
-		console.log('double click');
 	});
 }
 
 function actionEvents() {
 	$('#action_container button').on('click', function () {
 		getSelected();
+		activeMove = false;
 		var id = event.target.id;
 		switch (id) {
 		case 'btn_split':
-			splitSelected();
+			splitSelected(false); //Done
 			break;
 		case 'btn_AutoSplit':
 			autoSplit();

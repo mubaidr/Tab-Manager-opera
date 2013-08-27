@@ -2,7 +2,7 @@
 TO DO
 Version 1:
 -Icons for Extension, buttons and tabs/windows.
--Focus selected tab/window
+-Use right click to focus selected tab/window (disallow default right click action)
 -Auto Split based on Domain names
 -!Memory leak and other performance improvements
 -Status icons for tabs/windows
@@ -13,21 +13,12 @@ Version 2:
 -Make windows/tabs persistant
  */
 'use strict';
-var prev_type, selected = {
+var prev_type = 'undefined', selected = {
 	'type' : 'undefined',
 	'list' : []
-};
+}, activeMove = false;
 
-function focusTab(target) {
-	log($(target).previous)
-	/*
-	if (type) {
-		chrome.windows.update(id, {'focused': true});
-	} else {
-		chrome.tabs.update(id, { 'selected': true });
-	}
-	*/
-}
+function focusTab(target) {}
 
 function getSelected() {
 	deSelect();
@@ -126,7 +117,7 @@ function closeSelected(all) {
 
 function makePrivate(all) {
 	/*Merge the two code snippets using only obj for windows array*/
-	if (typeof (all) !== 'undefined') {
+	if (typeof(all) !== 'undefined') {
 		chrome.windows.getAll({
 			populate : true
 		}, function (wins) {
@@ -179,7 +170,7 @@ function makePrivate(all) {
 }
 
 function togglePin(all) {
-	if (typeof (all) !== 'undefined') {
+	if (typeof(all) !== 'undefined') {
 		log(all);
 		chrome.windows.getAll({
 			populate : true
@@ -214,20 +205,34 @@ function togglePin(all) {
 	}
 }
 
-function splitSelected(parent) {
+function splitSelected(parent, id) {
 	var obj = selected;
 	var tab_ids = obj.list;
 	if (tab_ids.length > 0 && obj.type === 'Tab') {
-		if (parent) {
-			chrome.windows.create(function (new_window) {
+		if (!parent) {
+			chrome.windows.create({}, function (new_window) {
 				for (var j = 0; j < tab_ids.length; j++) {
-					chrome.tabs.update(tab_ids[j], {
-						//How to change parent window of a tab
+					chrome.tabs.move(tab_ids[j], {
+						'windowId' : new_window.id,
+						'index' : -1
 					});
 				}
-			});
+			})
+		} else {
+			for (var j = 0; j < tab_ids.length; j++) {
+				chrome.tabs.move(tab_ids[j], {
+					'windowId' : parseInt(id, 10),
+					'index' : -1
+				});
+			}
 		}
 	}
+	loadData();
+}
+
+function moveto(){
+	activeMove = true;
+	alert("Please select target Window");
 }
 
 /*
