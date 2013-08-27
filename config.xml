@@ -1,9 +1,0 @@
-<?xml version='1.1' encoding='utf-8'?>
-<widget xmlns="http://www.w3.org/ns/widgets" id="https://addons.opera.com/extensions/details/tab-splitter/" version="1.3.1" href="https://addons.opera.com/extensions/details/tab-splitter/">
-  <name>Tab Splitter</name>
-  <author>Tyuio</author>
-  <icon src="icon.png" width="64" height="64"/>
-  <icon src="icon_18.png" width="18" height="18"/>
-  <update-description href="https://extension-updates.opera.com/api/w3c-wd1/update/13bb1893-5b28-4314-870e-2ac606463760/"/>
-  <description xml:lang="en">All rounder Tab Managing tool. Splits/Groups/Automate</description>
-</widget>
