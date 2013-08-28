@@ -1,17 +1,17 @@
 ﻿'use strict';
 var prev_type = 'undefined', selected = {
-	'type' : 'undefined',
-	'list' : []
+	'type': 'undefined',
+	'list': []
 }, activeMove = false;
 
 function focusTab(id, type) {
 	if (type === 'Tab') {
 		chrome.tabs.update(parseInt(id, 10), {
-			'selected' : true
+			'selected': true
 		});
 	} else {
 		chrome.windows.update(parseInt(id, 10), {
-			'focused' : true
+			'focused': true
 		});
 	}
 }
@@ -48,21 +48,21 @@ function createNew(type) {
 		if (obj.type === 'Window') {
 			for (var i = 0; i < obj.list.length; i++) {
 				chrome.tabs.create({
-					'windowId' : obj.list[i],
-					'selected' : false
+					'windowId': obj.list[i],
+					'selected': false
 				});
 			}
 		} else {
 			chrome.windows.getCurrent(function (win) {
 				chrome.tabs.create({
-					'windowId' : win.id,
-					'selected' : false
+					'windowId': win.id,
+					'selected': false
 				});
 			});
 		}
 	} else {
 		chrome.windows.create({
-			'focused' : false
+			'focused': false
 		});
 	}
 }
@@ -73,12 +73,12 @@ function closeSelected(all) {
 		var currentWin,
 		newTab;
 		chrome.windows.getCurrent({
-			'populate' : true
+			'populate': true
 		}, function (win) {
 			currentWin = win.id;
 			chrome.tabs.create({
-				'windowId' : win.id,
-				'selected' : false
+				'windowId': win.id,
+				'selected': false
 			}, function (tab) {
 				newTab = tab.id
 			});
@@ -111,25 +111,31 @@ function closeSelected(all) {
 	deSelect(true);
 }
 
-function makePrivate(all) {
-	/*Merge the two code snippets using only obj for windows array*/
-	if (typeof(all) !== 'undefined') {
+function makePrivate(call) {
+	if (call !== 0) {
+		var bool = true;
+		if (call === 2) { bool = false; }
 		chrome.windows.getAll({
-			populate : true
+			populate: true
 		}, function (wins) {
 			for (var k = 0; k < wins.length; k++) {
-				chrome.windows.create({
-					'incognito' : all
-				}, function (new_window) {
-					for (var j = 0; j < wins[k].tabs.length; j++) {
-						chrome.tabs.create({
-							'windowId' : new_window.id,
-							'url' : wins[k].tabs[j].url
-						});
-					}
-					chrome.tabs.remove(new_window.tabs[0].id);
-				});
-				chrome.windows.remove(wins[k].id);
+				var win = wins[k];
+				if (win.incognito !== bool) {
+					chrome.windows.create({
+						'incognito': bool,
+						'focused': win.focused
+					}, function (new_win) {
+						for (var j = 0; j < win.tabs.length; j++) {
+							({
+								'windowId': new_win.id,
+								'url': win.tabs[j].url,
+								'selected': false
+							});
+						}
+						chrome.tabs.remove(new_win.tabs[0].id);
+					});
+					chrome.windows.remove(win.id);
+				}
 			}
 		});
 	} else {
@@ -138,8 +144,8 @@ function makePrivate(all) {
 			if (obj.type === 'Window') {
 				for (var i = 0; i < obj.list.length; i++) {
 					var incognito = true;
-					chrome.windows.get(obj.list[0], {
-						populate : true
+					chrome.windows.get(obj.list[i], {
+						populate: true
 					}, function (old_window) {
 						if (old_window.incognito === true) {
 							incognito = false;
@@ -147,12 +153,13 @@ function makePrivate(all) {
 							incognito = true;
 						}
 						chrome.windows.create({
-							'incognito' : incognito
+							'incognito': incognito
 						}, function (new_window) {
 							for (var j = 0; j < old_window.tabs.length; j++) {
 								chrome.tabs.create({
-									'windowId' : new_window.id,
-									'url' : old_window.tabs[j].url
+									'windowId': new_window.id,
+									'url': old_window.tabs[j].url,
+									'selected': false
 								});
 							}
 							chrome.tabs.remove(new_window.tabs[0].id);
@@ -165,17 +172,22 @@ function makePrivate(all) {
 	}
 }
 
-function togglePin(all) {
-	if (typeof(all) !== 'undefined') {
-		log(all);
+function togglePin(call) {
+	if (call !== 0) {
+		var bool = true;
+		if (call === 2) { bool = false };
 		chrome.windows.getAll({
-			populate : true
+			populate: true
 		}, function (wins) {
 			for (var k = 0; k < wins.length; k++) {
-				for (var j = 0; j < wins[k].tabs.length; j++) {
-					chrome.tabs.update({
-						'pinned' : all
+				var win = wins[k];
+				for (var j = 0; j < win.tabs.length; j++) {
+					var tab = win.tabs[j];
+					log('old : ' + tab);
+					chrome.tabs.update(tab.id, {
+						'pinned': bool
 					});
+					log('new : ' + tab);
 				}
 			}
 		});
@@ -192,7 +204,7 @@ function togglePin(all) {
 							pin = true;
 						}
 						chrome.tabs.update(tab.id, {
-							'pinned' : pin
+							'pinned': pin
 						});
 					});
 				}
@@ -209,16 +221,16 @@ function splitSelected(parent, id) {
 			chrome.windows.create({}, function (new_window) {
 				for (var j = 0; j < tab_ids.length; j++) {
 					chrome.tabs.move(tab_ids[j], {
-						'windowId' : new_window.id,
-						'index' : -1
+						'windowId': new_window.id,
+						'index': -1
 					});
 				}
 			})
 		} else {
 			for (var j = 0; j < tab_ids.length; j++) {
 				chrome.tabs.move(tab_ids[j], {
-					'windowId' : parseInt(id, 10),
-					'index' : -1
+					'windowId': parseInt(id, 10),
+					'index': -1
 				});
 			}
 		}
@@ -229,6 +241,83 @@ function splitSelected(parent, id) {
 function moveto() {
 	activeMove = true;
 	alert("Please select target Window");
+}
+
+function reload(bool) {
+	if (bool) {
+		chrome.windows.getAll({
+			populate: true
+		}, function (wins) {
+			for (var k = 0; k < wins.length; k++) {
+				var win = wins[k];
+				for (var j = 0; j < win.tabs.length; j++) {
+					var tab = win.tabs[j];
+					chrome.tabs.reload(tab.id);
+				}
+			}
+		});
+	} else {
+		var obj = selected;
+		if (obj.list.length > 0) {
+			var arr = obj.list;
+			if (obj.type === 'Tab') {
+				for (var i = 0; i < arr.length; i++) {
+					chrome.tabs.reload(arr[i]);
+				}
+			} else {
+				for (var i = 0; i < arr.length; i++) {
+					chrome.windows.get(arr[i], {
+						populate: true
+					}, function (win) {
+						log(win)
+						for (var j = 0; j < win.tabs.length; j++) {
+							var tab = win.tabs[j];
+							chrome.tabs.reload(tab.id);
+						}
+					});
+				}
+			}
+		}
+	}
+}
+
+function clone() {
+	var obj = selected;
+	if (obj.list.length > 0) {
+		if (obj.type === 'Window') {
+			for (var i = 0; i < obj.list.length; i++) {
+				chrome.windows.get(obj.list[i], {
+					populate: true
+				}, function (old_win) {
+					chrome.windows.create({
+						'focused': old_win.focused,
+						'incognito': old_win.incognito
+					}, function (new_win) {
+						var old_tabs = old_win.tabs;
+						for (var j = 0; j < old_tabs.length; j++) {
+							chrome.tabs.create({
+								'windowId': new_win.id,
+								'url': old_tabs[j].url,
+								'selected': false
+							});
+						}
+						chrome.tabs.remove(new_win.tabs[0].id);
+					});
+				});
+			}
+		} else {
+			var tab_ids = obj.list;
+			for (var i = 0; i < tab_ids.length; i++) {
+				chrome.tabs.get(tab_ids[i], function (tab) {
+					chrome.tabs.create({
+						'windowId': tab.windowId,
+						'url': tab.url,
+						'selected': false
+					});
+				})
+			}
+		}
+	}
 }
 
 /*
@@ -257,14 +346,4 @@ tabGrps.push(domainList[w][1]);
 
 }
 };
-
-function tabFocus(tabToFocus){
-handleClick();
-for (i = 0; i < count.length; i++){
-if(count[i].id ==  tabToFocus){
-count[i].focus();
-break;
-}
-}
-}
 */

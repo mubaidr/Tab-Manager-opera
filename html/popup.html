@@ -10,12 +10,12 @@
 </head>
 <body>
 	<div id="container">
-		<h1>Easy Tab Manager <span class="version_info">v0.1</span>
-		<span class="link">			
-			<a href="option.html" target="_blank">Options</a>
-			<a href="help.html" target="_blank">Help</a>
+		<h1>Easy Tab Manager <span class="version_info">v1 Beta 2</span>
+			<span class="link">
+				<a href="option.html" target="_blank">Options</a>
+				<a href="help.html" target="_blank">Help</a>
 			</span>
-			</h1>
+		</h1>
 		<div class="column left">
 			<h2>Windows/Tabs</h2>
 			<hr />
@@ -27,35 +27,45 @@
 			<h2>Actions</h2>
 			<ul id="action_container">
 				<li>
-					<h3>Split</h3>
-					<button id="btn_split" title="Move selected tab(s) to new Window.">Selected</button>
-					<button id="btn_AutoSplit" title="Auto Split tabs across multiple windows based on domain names.">Auto</button>
+					<h3>New</h3>
+					<button id="btn_newTab" class="two" title="Creates new tab in selected Window.">Tab</button>
+					<button id="btn_newWindow" class="two" title="Create a new Window.">Window</button>
+				</li>
+
+				<li>
+					<h3>Close</h3>
+					<button id="btn_close" class="two" title="Close selected windows/tabs.">Selected</button>
+					<button id="btn_close_all" class="two" title="Close all windows/tabs and creates a new tab.">All</button>
 				</li>
 				<li>
-					<h3>Move</h3>
-					<button id="btn_Move" title="Move tab(s) across Window.">Move</button>
+					<h3>Reload</h3>
+					<button id="btn_reload" class="two" title="Reload selected Tabs/Windows.">Selected</button>
+					<button id="btn_reload_all" class="two" title="Reload all Tabs/Windows.">All</button>
 				</li>
 				<li>
 					<h3>Pin</h3>
 					<button id="btn_Pin" title="Toggle Pin status of selected tab(s).">Selected</button>
-					<button id="btn_Pin_all" title="Pin all tab(s).">Pin All</button>
-					<button id="btn_UnPin_all" title="UnPin all tab(s).">UnPin All</button>
+					<button id="btn_Pin_all" class="two" title="Pin all tab(s).">Pin All</button>
+					<button id="btn_UnPin_all" class="two" title="UnPin all tab(s).">UnPin All</button>
 				</li>
 				<li>
 					<h3>Private</h3>
 					<button id="btn_Private" title="Toggle Private status of selected window(S).">Selected</button>
-					<button id="btn_Private_all" title="Make all window(s) Private.">All Private</button>
-					<button id="btn_Normal_all" title="Make all window(s) Normal.">All Normal</button>
+					<button id="btn_Private_all" class="two" title="Make all window(s) Private.">All Private</button>
+					<button id="btn_Normal_all" class="two" title="Make all window(s) Normal.">All Normal</button>
 				</li>
 				<li>
-					<h3>Close</h3>
-					<button id="btn_close" title="Close selected windows/tabs.">Selected</button>
-					<button id="btn_close_all" title="Close all windows/tabs and creates a new tab.">Close All</button>
+					<h3>Move</h3>
+					<button id="btn_Move" title="Move tab(s) across Window.">Move Tabs</button>
 				</li>
 				<li>
-					<h3>New</h3>
-					<button id="btn_newTab" title="Creates new tab in selected Window.">Tab</button>
-					<button id="btn_newWindow" title="Create a new Window.">Window</button>
+					<h3>Split</h3>
+					<button id="btn_split" class="two" title="Move selected tab(s) to new Window.">Selected</button>
+					<button id="btn_AutoSplit" class="two" title="Auto Split tabs across multiple windows based on domain names.">Auto</button>
+				</li>
+				<li>
+					<h3>Clone</h3>
+					<button id="btn_clone" title="Duplicates/Clones selected Tabs/Windows.">Selected</button>
 				</li>
 			</ul>
 		</div>

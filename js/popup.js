@@ -2,12 +2,11 @@
 window.onload = function () {
 	loadData();
 	actionEvents();
-	//window.setInterval(loadData(), 5000); Need Alarm API
 };
 
 function loadData() {
 	chrome.windows.getAll({
-		populate : true
+		populate: true
 	}, function (windows) {
 		$('#tab_container').html('');
 		for (var i = 0; i < windows.length; i++) {
@@ -34,23 +33,23 @@ function addToList(id, type, parent_id, object) {
 	$(li).append(h4);
 	attachEvents(h4);
 	switch (type) {
-	case 'Window':
-		li.id = id + '_liw';
-		$(h4).addClass('window');
-		$(h4).html(type);
-		var ul = document.createElement('ul');
-		$(li).append(ul);
-		$('#tab_container').append(li);
-		break;
-	case 'Tab':
-		li.id = id + '_lit';
-		$(h4).addClass('tab');
-		h4.title = object.url;
-		$(h4).html(object.title);
-		$('#' + parent_id + '_liw ul').append(li);
-		break;
-	default:
-		break;
+		case 'Window':
+			li.id = id + '_liw';
+			$(h4).addClass('window');
+			$(h4).html(type);
+			var ul = document.createElement('ul');
+			$(li).append(ul);
+			$('#tab_container').append(li);
+			break;
+		case 'Tab':
+			li.id = id + '_lit';
+			$(h4).addClass('tab');
+			h4.title = object.url;
+			$(h4).html(object.title);
+			$('#' + parent_id + '_liw ul').append(li);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -82,47 +81,57 @@ function actionEvents() {
 		activeMove = false;
 		var id = event.target.id;
 		switch (id) {
-		case 'btn_split':
-			splitSelected(false); //Done
-			break;
-		case 'btn_AutoSplit':
-			autoSplit();
-			break;
-		case 'btn_Move':
-			moveto();
-			break;
-		case 'btn_Pin': //Done
-			togglePin();
-			break;
-		case 'btn_Pin_all': //Done
-			togglePin(true);
-			break;
-		case 'btn_UnPin_all': //Done
-			togglePin(false);
-			break;
-		case 'btn_Private': //Done
-			makePrivate();
-			break;
-		case 'btn_Private_all': //Done
-			makePrivate(true);
-			break;
-		case 'btn_Normal_all': //Done
-			makePrivate(false);
-			break;
-		case 'btn_close': //Done
-			closeSelected();
-			break;
-		case 'btn_close_all': //Done
-			closeSelected(true);
-			break;
-		case 'btn_newTab': //Done
-			createNew('Tab');
-			break;
-		case 'btn_newWindow': //Done
-			createNew('Window');
-			break;
-		default:
-			break;
+			case 'btn_split':
+				splitSelected(false); //Done
+				break;
+			case 'btn_AutoSplit':
+				alert('Sorry! This function is not ready yet!');
+				autoSplit();
+				break;
+			case 'btn_Move': //Done
+				moveto();
+				break;
+			case 'btn_Pin': //Done
+				togglePin(0);
+				break;
+			case 'btn_Pin_all': //Done
+				togglePin(1);
+				break;
+			case 'btn_UnPin_all': //Done
+				togglePin(2);
+				break;
+			case 'btn_Private': //Done
+				makePrivate(0);
+				break;
+			case 'btn_Private_all': //Done
+				makePrivate(1);
+				break;
+			case 'btn_Normal_all': //Done
+				makePrivate(2);
+				break;
+			case 'btn_close': //Done
+				closeSelected();
+				break;
+			case 'btn_close_all': //Done
+				closeSelected(true);
+				break;
+			case 'btn_reload': //Done
+				reload();
+				break;
+			case 'btn_reload_all': //Done
+				reload(true);
+				break;
+			case 'btn_newTab': //Done
+				createNew('Tab');
+				break;
+			case 'btn_newWindow': //Done
+				createNew('Window');
+				break;
+			case 'btn_clone': //Done
+				clone();
+				break;
+			default:
+				break;
 		}
 		loadData();
 	});

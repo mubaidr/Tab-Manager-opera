@@ -8,7 +8,7 @@
 		"name" : "mubaidr",
 		"url" : "http://my.opera.com/mubaidr/blog/"
 	},
-	"homepage_url" : "http://my.opera.com/mubaidr/blog/",
+	"homepage_url" : "http://my.opera.com/mubaidr/blog/2013/08/28/easy-tab-manager",
 	"browser_action" : {
 		"default_title" : "Manage Tabs",
 		"default_popup" : "html/popup.html",
