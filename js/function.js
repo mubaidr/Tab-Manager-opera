@@ -7,6 +7,7 @@ Version 1:
 -!Memory leak and other performance improvements
 -Status icons for tabs/windows
 -Add keyboard shortcuts
+-remove duplicate tabs
 Version 2:
 -Tab seearch filter
 -Nick names for Windows/Tabs
@@ -18,7 +19,17 @@ var prev_type = 'undefined', selected = {
 	'list' : []
 }, activeMove = false;
 
-function focusTab(target) {}
+function focusTab(id, type) {
+	if (type === 'Tab') {
+		chrome.tabs.update(parseInt(id, 10), {
+			'selected' : true
+		});
+	} else {
+		chrome.windows.update(parseInt(id, 10), {
+			'focused' : true
+		});
+	}
+}
 
 function getSelected() {
 	deSelect();
@@ -230,7 +241,7 @@ function splitSelected(parent, id) {
 	loadData();
 }
 
-function moveto(){
+function moveto() {
 	activeMove = true;
 	alert("Please select target Window");
 }

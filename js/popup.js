@@ -71,6 +71,9 @@ function attachEvents(item) {
 			}
 		}
 	});
+	$(item).dblclick(function () {
+		focusTab(item.id, item.type)
+	});
 }
 
 function actionEvents() {
