@@ -1,19 +1,4 @@
-﻿/*
-TO DO
-Version 1:
--Icons for Extension, buttons and tabs/windows.
--Use right click to focus selected tab/window (disallow default right click action)
--Auto Split based on Domain names
--!Memory leak and other performance improvements
--Status icons for tabs/windows
--Add keyboard shortcuts
--remove duplicate tabs
-Version 2:
--Tab seearch filter
--Nick names for Windows/Tabs
--Make windows/tabs persistant
- */
-'use strict';
+﻿'use strict';
 var prev_type = 'undefined', selected = {
 	'type' : 'undefined',
 	'list' : []
