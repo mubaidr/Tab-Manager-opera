@@ -1,20 +1,20 @@
 /*
 TO DO
-Version 1:
--Icons for Extension, buttons and tabs/windows.
--Auto Split based on Domain names
--!Memory leak and other performance improvements
--Status icons for tabs/windows
--Add keyboard shortcuts
--remove duplicate tabs
--reload tabs
+Current version:
+Auto Split based on Domain names.
+Add keyboard short-cuts.
+Performance improvements.
+Icons for Extension, buttons and tabs/windows.
+Status icons for tabs/windows (pinned, selected, private).
+Documentation/Help.
 
-Version 2:
--Use right click for all actions.
--Tab seearch filter
--Nick names for Windows/Tabs
--Make windows/tabs persistant
--recent closed tabs menu
--reload after some time
--tab thumbnails on hover
- */
+Next Version:
+Options Page.
+Tab search filter.
+Nick names for Windows/Tabs.
+Make windows/tabs persistent.
+recent closed tabs menu.
+reload after some time.
+Use right click for all actions.
+tab thumbnails on hover.
+*/

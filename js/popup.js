@@ -130,6 +130,9 @@ function actionEvents() {
 			case 'btn_clone': //Done
 				clone();
 				break;
+			case 'btn_duplicate': //Done
+				removeDuplicate();
+				break;
 			default:
 				break;
 		}

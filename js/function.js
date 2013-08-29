@@ -300,6 +300,7 @@ function clone() {
 								'url': old_tabs[j].url,
 								'selected': false
 							});
+							//chrome.tabs.duplicate(old_tabs[j].id);
 						}
 						chrome.tabs.remove(new_win.tabs[0].id);
 					});
@@ -308,16 +309,25 @@ function clone() {
 		} else {
 			var tab_ids = obj.list;
 			for (var i = 0; i < tab_ids.length; i++) {
-				chrome.tabs.get(tab_ids[i], function (tab) {
-					chrome.tabs.create({
-						'windowId': tab.windowId,
-						'url': tab.url,
-						'selected': false
-					});
-				})
+				chrome.tabs.duplicate(tab_ids[i]);
 			}
 		}
 	}
+}
+
+function removeDuplicate() {
+	chrome.windows.getAll({ populate: true }, function (wins) {
+		for (var k = 0; k < wins.length; k++) {
+			var tabs = wins[k].tabs;
+			for (var l = 0; l < tabs.length; l++) {
+				for (var j = 0; j < tabs.length && j!==l; j++) {					
+					if (tabs[j].url === tabs[l].url) {
+						chrome.tabs.remove(tabs[j].id);
+					}
+				}
+			}
+		}
+	});
 }
 
 /*
