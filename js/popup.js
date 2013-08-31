@@ -13,28 +13,28 @@ function loadData() {
 			//log(windows[i]);
 			var win = windows[i];
 			var tabs = win.tabs;
-			addToList(win.id, 'Window');
+			addToList(win, 'Window');
 			for (var j = 0; j < tabs.length; j++) {
 				var tab = tabs[j];
 				//log(tab);
-				addToList(tab.id, 'Tab', win.id, tab);
+				addToList(tab, 'Tab', win.id);
 			}
 		}
 		restoreSelected();
 	});
 }
 
-function addToList(id, type, parent_id, object) {
+function addToList(object, type, parent_id) {
 	//Populate list
 	var li = document.createElement('li');
 	var h4 = document.createElement('h4');
-	h4.id = id;
+	h4.id = object.id;
 	h4.type = type;
 	$(li).append(h4);
 	attachEvents(h4);
 	switch (type) {
 		case 'Window':
-			li.id = id + '_liw';
+			li.id = object.id + '_liw';
 			$(h4).addClass('window');
 			$(h4).html(type);
 			var ul = document.createElement('ul');
@@ -42,7 +42,7 @@ function addToList(id, type, parent_id, object) {
 			$('#tab_container').append(li);
 			break;
 		case 'Tab':
-			li.id = id + '_lit';
+			li.id = object.id + '_lit';
 			$(h4).addClass('tab');
 			h4.title = object.url;
 			$(h4).html(object.title);
@@ -50,6 +50,48 @@ function addToList(id, type, parent_id, object) {
 			break;
 		default:
 			break;
+	}
+	showStatus(object, type, parent_id);
+}
+
+function showStatus(object, type, parent_id) {
+	var item = $('#' + object.id);
+	if (type === 'Window') {
+		if (object.incognito) {
+			item.addClass('incognito');
+			item.css({
+				'background-image': 'url(../img/window.png), url(../img/private.png)'
+			});
+		} else {
+			item.css({
+				'background-image': 'url(../img/window.png)'
+			})
+		}
+	} else {
+		if (object.pinned) {
+			item.css({
+				'background-image': 'url(' + object.favIconUrl + '), url(../img/pin.png)'
+			});
+		} else {
+			if (object.url !== 'opera://startpage/') {
+				item.css({
+					'background-image': 'url(' + object.favIconUrl + ')'
+				})
+			} else {
+				item.css({
+					'background-image': 'url(../img/icon_enable.png)'
+				})
+			}
+		}
+		
+	}
+	item.css({
+		'background-position': '0 0, right 0',
+		'background-repeat': 'no-repeat',
+		'background-size': '14px 14px'
+	});
+	if (object.focused || object.selected) {
+		item.addClass('focused');
 	}
 }
 
@@ -85,8 +127,7 @@ function actionEvents() {
 				splitSelected(false); //Done
 				break;
 			case 'btn_AutoSplit':
-				alert('Sorry! This function is not ready yet!');
-				autoSplit();
+				autoSplitTabs();
 				break;
 			case 'btn_Move': //Done
 				moveto();
@@ -125,7 +166,10 @@ function actionEvents() {
 				createNew('Tab');
 				break;
 			case 'btn_newWindow': //Done
-				createNew('Window');
+				createNew('Window', false);
+				break;
+			case 'btn_newPrivateWindow': //Done
+				createNew('Window', true);
 				break;
 			case 'btn_clone': //Done
 				clone();

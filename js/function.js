@@ -7,11 +7,11 @@ var prev_type = 'undefined', selected = {
 function focusTab(id, type) {
 	if (type === 'Tab') {
 		chrome.tabs.update(parseInt(id, 10), {
-			'selected': true
+			selected: true
 		});
 	} else {
 		chrome.windows.update(parseInt(id, 10), {
-			'focused': true
+			focused: true
 		});
 	}
 }
@@ -42,27 +42,28 @@ function deSelect(reset) {
 	selected.list.length = 0;
 }
 
-function createNew(type) {
+function createNew(type, p) {
 	var obj = selected;
 	if (type === 'Tab') {
 		if (obj.type === 'Window') {
 			for (var i = 0; i < obj.list.length; i++) {
 				chrome.tabs.create({
-					'windowId': obj.list[i],
-					'selected': false
+					windowId: obj.list[i],
+					selected: false
 				});
 			}
 		} else {
 			chrome.windows.getCurrent(function (win) {
 				chrome.tabs.create({
-					'windowId': win.id,
-					'selected': false
+					windowId: win.id,
+					selected: false
 				});
 			});
 		}
 	} else {
 		chrome.windows.create({
-			'focused': false
+			focused: false,
+			incognito: p
 		});
 	}
 }
@@ -73,12 +74,12 @@ function closeSelected(all) {
 		var currentWin,
 		newTab;
 		chrome.windows.getCurrent({
-			'populate': true
+			populate: true
 		}, function (win) {
 			currentWin = win.id;
 			chrome.tabs.create({
-				'windowId': win.id,
-				'selected': false
+				windowId: win.id,
+				selected: false
 			}, function (tab) {
 				newTab = tab.id
 			});
@@ -112,6 +113,7 @@ function closeSelected(all) {
 }
 
 function makePrivate(call) {
+	//Check all normal and pall private
 	if (call !== 0) {
 		var bool = true;
 		if (call === 2) { bool = false; }
@@ -153,7 +155,7 @@ function makePrivate(call) {
 							incognito = true;
 						}
 						chrome.windows.create({
-							'incognito': incognito
+							incognito: incognito
 						}, function (new_window) {
 							for (var j = 0; j < old_window.tabs.length; j++) {
 								chrome.tabs.create({
@@ -183,11 +185,9 @@ function togglePin(call) {
 				var win = wins[k];
 				for (var j = 0; j < win.tabs.length; j++) {
 					var tab = win.tabs[j];
-					log('old : ' + tab);
 					chrome.tabs.update(tab.id, {
-						'pinned': bool
+						pinned: bool
 					});
-					log('new : ' + tab);
 				}
 			}
 		});
@@ -204,7 +204,7 @@ function togglePin(call) {
 							pin = true;
 						}
 						chrome.tabs.update(tab.id, {
-							'pinned': pin
+							pinned: pin
 						});
 					});
 				}
@@ -221,16 +221,16 @@ function splitSelected(parent, id) {
 			chrome.windows.create({}, function (new_window) {
 				for (var j = 0; j < tab_ids.length; j++) {
 					chrome.tabs.move(tab_ids[j], {
-						'windowId': new_window.id,
-						'index': -1
+						windowId: new_window.id,
+						index: -1
 					});
 				}
 			})
 		} else {
 			for (var j = 0; j < tab_ids.length; j++) {
 				chrome.tabs.move(tab_ids[j], {
-					'windowId': parseInt(id, 10),
-					'index': -1
+					windowId: parseInt(id, 10),
+					index: -1
 				});
 			}
 		}
@@ -290,15 +290,15 @@ function clone() {
 					populate: true
 				}, function (old_win) {
 					chrome.windows.create({
-						'focused': old_win.focused,
-						'incognito': old_win.incognito
+						focused: old_win.focused,
+						incognito: old_win.incognito
 					}, function (new_win) {
 						var old_tabs = old_win.tabs;
 						for (var j = 0; j < old_tabs.length; j++) {
 							chrome.tabs.create({
-								'windowId': new_win.id,
-								'url': old_tabs[j].url,
-								'selected': false
+								windowId: new_win.id,
+								url: old_tabs[j].url,
+								selected: false
 							});
 							//chrome.tabs.duplicate(old_tabs[j].id);
 						}
@@ -320,7 +320,7 @@ function removeDuplicate() {
 		for (var k = 0; k < wins.length; k++) {
 			var tabs = wins[k].tabs;
 			for (var l = 0; l < tabs.length; l++) {
-				for (var j = 0; j < tabs.length && j!==l; j++) {					
+				for (var j = 0; j < tabs.length && j !== l; j++) {
 					if (tabs[j].url === tabs[l].url) {
 						chrome.tabs.remove(tabs[j].id);
 					}
@@ -329,31 +329,3 @@ function removeDuplicate() {
 		}
 	});
 }
-
-/*
-function autoSplitTabs(){
-handleClick();
-var domainList = new Array();
-for (f = 0; f < count.length; f++){
-var matches = count[f].url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
-var domain = matches && matches[1];
-if(domain){
-domain = domain.substring(domain.indexOf(".")+1);
-domainList.push([domain,count[f]]);
-}
-}
-domainList.sort();
-var tabGrps = new Array();
-for (w = 0; w < domainList.length; w++){
-if (w == 0){tabGrps.push(domainList[w][1]);}
-else if(domainList[w][0] == domainList[w-1][0]){
-tabGrps.push(domainList[w][1]);
-}else{
-var win = opera.extension.windows.create(tabGrps);
-tabGrps = [];
-tabGrps.push(domainList[w][1]);
-}
-
-}
-};
-*/

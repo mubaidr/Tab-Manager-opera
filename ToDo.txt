@@ -2,13 +2,16 @@
 TO DO
 Current version:
 Auto Split based on Domain names.
+Status icons for tabs/windows (pinned, selected, private).
 Add keyboard short-cuts.
 Performance improvements.
 Icons for Extension, buttons and tabs/windows.
-Status icons for tabs/windows (pinned, selected, private).
 Documentation/Help.
 
 Next Version:
+Add to speed-dial
+Add to stash
+Add bookmark
 Options Page.
 Tab search filter.
 Nick names for Windows/Tabs.
