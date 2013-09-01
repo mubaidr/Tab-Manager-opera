@@ -1,8 +1,6 @@
 /*
 TO DO
 Current version:
-Auto Split based on Domain names.
-Status icons for tabs/windows (pinned, selected, private).
 Add keyboard short-cuts.
 Performance improvements.
 Icons for Extension, buttons and tabs/windows.

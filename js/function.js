@@ -124,14 +124,14 @@ function makePrivate(call) {
 				var win = wins[k];
 				if (win.incognito !== bool) {
 					chrome.windows.create({
-						'incognito': bool,
-						'focused': win.focused
+						incognito: bool,
+						focused: win.focused
 					}, function (new_win) {
 						for (var j = 0; j < win.tabs.length; j++) {
 							({
-								'windowId': new_win.id,
-								'url': win.tabs[j].url,
-								'selected': false
+								windowId: new_win.id,
+								url: win.tabs[j].url,
+								selected: false
 							});
 						}
 						chrome.tabs.remove(new_win.tabs[0].id);
@@ -159,9 +159,9 @@ function makePrivate(call) {
 						}, function (new_window) {
 							for (var j = 0; j < old_window.tabs.length; j++) {
 								chrome.tabs.create({
-									'windowId': new_window.id,
-									'url': old_window.tabs[j].url,
-									'selected': false
+									windowId: new_window.id,
+									url: old_window.tabs[j].url,
+									selected: false
 								});
 							}
 							chrome.tabs.remove(new_window.tabs[0].id);

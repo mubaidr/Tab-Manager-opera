@@ -69,9 +69,15 @@ function showStatus(object, type, parent_id) {
 		}
 	} else {
 		if (object.pinned) {
-			item.css({
-				'background-image': 'url(' + object.favIconUrl + '), url(../img/pin.png)'
-			});
+			if (object.url !== 'opera://startpage/') {
+				item.css({
+					'background-image': 'url(' + object.favIconUrl + '), url(../img/pin.png)'
+				})
+			} else {
+				item.css({
+					'background-image': 'url(../img/tab.png), url(../img/pin.png)'
+				})
+			}
 		} else {
 			if (object.url !== 'opera://startpage/') {
 				item.css({
@@ -79,14 +85,14 @@ function showStatus(object, type, parent_id) {
 				})
 			} else {
 				item.css({
-					'background-image': 'url(../img/icon_enable.png)'
+					'background-image': 'url(../img/tab.png)'
 				})
 			}
 		}
 		
 	}
 	item.css({
-		'background-position': '0 0, right 0',
+		'background-position': '0 center, right center',
 		'background-repeat': 'no-repeat',
 		'background-size': '14px 14px'
 	});
