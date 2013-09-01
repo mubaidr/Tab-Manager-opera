@@ -59,9 +59,9 @@ h4 {
 	margin: 0;
 	width: calc(100% - 36px);
 	cursor: pointer;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	font-weight: normal;	
-	padding: 0 16px;
+	padding: 0 18px;
 	border: 1px solid rgba(0,0,0,.15);
 	transition: all 0.25s;
 	background-color: #f5f6f7;
@@ -160,15 +160,11 @@ h4.selected {
 	border-color: #175E3A!important;
 	background-color: #1c7045!important;	
 	box-shadow: 0 0 3px #1c7045;
-	color: white!important;
+	color: white!important;	
 }
 
 h4.focused {
 	color: #0f0f0f;
-}
-
-h4.incognito {
-	background-color: rgba(0,0,0,.1);
 }
 
 #action_container {

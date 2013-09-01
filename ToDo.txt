@@ -1,10 +1,13 @@
 /*
 TO DO
 Current version:
-Add keyboard short-cuts.
-Performance improvements.
-Icons for Extension, buttons and tabs/windows.
-Documentation/Help.
+* this won't be a general use but when I tried the Private selected on a normal new window and a private new window at the same time, I found that I got a private window and a normal window with a blank startpage containg 3 dead buttons (dial,stash,discover) on the top. I tried it again and now only the theme lacks.
+* All Private doesn't give back the opened tabs; when using All private or All normal there is a chance that they reduce the number of windows to 1.
+* Use backgorund page to get changes
+* Display no. of tabs in Badge
+* Add keyboard short-cuts.
+* Performance improvements.
+* Tooltips in bottom panel.
 
 Next Version:
 Add to speed-dial
