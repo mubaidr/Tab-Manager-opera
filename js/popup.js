@@ -2,6 +2,7 @@
 window.onload = function () {
 	loadData();
 	actionEvents();
+	tooltipEvents();
 };
 
 function loadData() {
@@ -97,7 +98,7 @@ function showStatus(object, type, parent_id) {
 
 	}
 	item.css({
-		'background-position' : '0 center, right center',
+		'background-position' : '2px center, right center',
 		'background-repeat' : 'no-repeat',
 		'background-size' : '14px 14px'
 	});
@@ -192,6 +193,25 @@ function actionEvents() {
 			break;
 		}
 		loadData();
+	});
+}
+
+function tooltipEvents() {
+	$('#action_container button').on('mouseover', function () {
+		$('#info').html($(this).attr('title'));
+		$(this).attr('title', '');
+	});
+	$('#action_container button').on('mouseleave', function () {
+		$(this).attr('title', $('#info').html());
+		$('#info').html('Welcome to Easy Tab Manager!');
+	});
+	$('.link a').on('mouseover', function () {
+		$('#info').html($(this).attr('title'));
+		$(this).attr('title', '');
+	});
+	$('.link a').on('mouseleave', function () {
+		$(this).attr('title', $('#info').html());
+		$('#info').html('Welcome to Easy Tab Manager!');
 	});
 }
 

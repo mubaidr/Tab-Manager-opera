@@ -14,10 +14,10 @@
 h1 {
 	color: white;
 	text-align: center;
-	font-size: 1.3em;	
+	font-size: 1.3em;
 	margin: 0;
 	padding: 10px 0;
-	margin-bottom: 10px;	
+	margin-bottom: 10px;
 	border-bottom: 10px solid #0f0f0f;
 	background-color: #1c7045;
 	box-shadow: 0 5px 5px 5px black;
@@ -57,16 +57,16 @@ h3 {
 h4 {
 	color: #666666;
 	margin: 0;
-	width: calc(100% - 36px);
+	width: calc(100% - 40px);
 	cursor: pointer;
 	font-size: 0.9em;
-	font-weight: normal;	
-	padding: 0 18px;
+	font-weight: normal;
+	padding: 0 20px;
 	border: 1px solid rgba(0,0,0,.15);
+	border-right: none;
 	transition: all 0.25s;
 	background-color: #f5f6f7;
 	border-top-color: #f5f6f7;
-	border-radius: 3px 0 0 3px;
 }
 
 	h4:hover {
@@ -89,14 +89,13 @@ h4 {
 }
 
 .right {
-padding-top: 10px;
 	float: right;
 	width: 30%;
 	background-color: white;
 }
 
 .bottom {
-height: 40px;
+	height: 40px;
 	padding: 0 5px;
 	background-color: white;
 }
@@ -108,6 +107,7 @@ height: 40px;
 	.bottom > .right {
 		width: 20%;
 	}
+
 #info {
 	font-size: small;
 }
@@ -133,10 +133,11 @@ height: 40px;
 }
 
 	#tab_container li {
-		padding: 0;		
+		padding: 0;
 	}
 
 	#tab_container > li > h4 {
+		border-left: none;
 	}
 
 	#tab_container ul {
@@ -145,30 +146,29 @@ height: 40px;
 	}
 
 		#tab_container ul li {
-			
 		}
 
 		#tab_container ul > li h4 {
 		}
 
 	#tab_container h4:hover {
-		
 	}
 
 /*Tab,Windows status*/
 h4.selected {
 	border-color: #175E3A!important;
-	background-color: #1c7045!important;	
+	background-color: #1c7045!important;
 	box-shadow: 0 0 3px #1c7045;
-	color: white!important;	
+	color: white!important;
 }
 
 h4.focused {
 	color: #0f0f0f;
 }
 
-#action_container {
-	height: 380px;
+#action_container {	
+	padding-top: 10px;
+	height: 370px;
 	list-style: none;
 	padding: 0 3px;
 	margin: 0;
@@ -182,14 +182,13 @@ h4.focused {
 	}
 
 		#action_container li h3 {
-			
 			/*padding-top: 10px;*/ clear: both;
 		}
 
 		#action_container li button {
 			font-size: 10px;
 			font-family: Calibri;
-			font-weight: bold;			
+			font-weight: bold;
 			width: 70%;
 			margin: 0;
 			margin-left: 15%;
@@ -217,12 +216,12 @@ h4.focused {
 		height: 16px;
 	}
 
-	.link a img {
-		width: 16px;
-		height: 16px;
-		opacity: 0.75;
-		transition: opacity 0.25s;
-	}
+		.link a img {
+			width: 16px;
+			height: 16px;
+			opacity: 0.75;
+			transition: opacity 0.25s;
+		}
 
 		.link a:hover img {
 			opacity: 1;
@@ -232,33 +231,40 @@ h4.focused {
 	clear: both;
 }
 
-h3{
+h3 {
 }
 
-h3.new{
-	background: url(../img/tab.png) left center no-repeat;
-}
-h3.close{
-	background: url(../img/close.png) left center no-repeat;
-}
-h3.reload{
-	background: url(../img/reload.png) left center no-repeat;
-}
-h3.pin{
-	background: url(../img/pin.png) left center no-repeat;
-}
-h3.private{
-	background: url(../img/private.png) left center no-repeat;
-}
-h3.move{
-	background: url(../img/move.png) left center no-repeat;
-}
-h3.clone{
-	background: url(../img/clone.png) left center no-repeat;
-}
-h3.duplicate{
-	background: url(../img/duplicate.png) left center no-repeat;
-}
+	h3.new {
+		background: url(../img/tab.png) left center no-repeat;
+	}
+
+	h3.close {
+		background: url(../img/close.png) left center no-repeat;
+	}
+
+	h3.reload {
+		background: url(../img/reload.png) left center no-repeat;
+	}
+
+	h3.pin {
+		background: url(../img/pin.png) left center no-repeat;
+	}
+
+	h3.private {
+		background: url(../img/private.png) left center no-repeat;
+	}
+
+	h3.move {
+		background: url(../img/move.png) left center no-repeat;
+	}
+
+	h3.clone {
+		background: url(../img/clone.png) left center no-repeat;
+	}
+
+	h3.duplicate {
+		background: url(../img/duplicate.png) left center no-repeat;
+	}
 /*
 #btn_split {
 	background: white url(../img/split.png) 5px center no-repeat;
@@ -294,7 +300,7 @@ h3.duplicate{
 	*/
 /*Scroll bar*/
 ::-webkit-scrollbar {
-	width:5px!important;
+	width: 5px!important;
 	height: 5px!important;
 }
 
