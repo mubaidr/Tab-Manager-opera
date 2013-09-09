@@ -114,7 +114,7 @@ function closeSelected(all) {
 
 function makePrivate(call) {
 	//Check all normal and all private
-	if (call === 1 || call === 2) {
+	if (call !== 0) {
 		var bool = true;
 		if (call === 2) {
 			bool = false;
@@ -137,42 +137,40 @@ function makePrivate(call) {
 							});
 						}
 						chrome.tabs.remove(new_win.tabs[0].id);
+						chrome.windows.remove(win.id);
 					});
-					chrome.windows.remove(win.id);
 				}
 			}
 		});
 	}
 	else {
 		var obj = selected;
-		if (obj.list.length > 0) {
-			if (obj.type === 'Window') {
-				for (var i = 0; i < obj.list.length; i++) {
-					chrome.windows.get(obj.list[i], {
-						populate: true
-					}, function (old_window) {
-						var incognito = true;
-						if (old_window.incognito === true) {
-							incognito = false;
-						} else {
-							incognito = true;
+		if (obj.list.length > 0 && obj.type === 'Window') {
+			for (var i = 0; i < obj.list.length; i++) {
+				chrome.windows.get(obj.list[i], {
+					populate: true
+				}, function (old_window) {
+					var incognito = true;
+					if (old_window.incognito) {
+						incognito = false;
+					}
+					chrome.windows.create({
+						incognito: incognito
+					}, function (new_window) {
+						for (var j = 0; j < old_window.tabs.length; j++) {
+							chrome.tabs.create({
+								windowId: new_window.id,
+								url: old_window.tabs[j].url,
+								selected: old_window.tabs[j].selected
+							});
 						}
-						chrome.windows.create({
-							incognito: incognito
-						}, function (new_window) {
-							for (var j = 0; j < old_window.tabs.length; j++) {
-								chrome.tabs.create({
-									windowId: new_window.id,
-									url: old_window.tabs[j].url,
-									selected: old_window.tabs[j].selected
-								});
-							}
-							chrome.tabs.remove(new_window.tabs[0].id);
-							chrome.windows.remove(old_window.id);
-						});
+						chrome.tabs.remove(new_window.tabs[0].id);
+						chrome.windows.remove(old_window.id);
 					});
-				}
+
+				});
 			}
+
 		}
 	}
 }
@@ -232,6 +230,8 @@ function splitSelected(parent, id) {
 				}
 			})
 		} else {
+			console.log(parent);
+			//get window object and copy tabs if incognito type
 			for (var j = 0; j < tab_ids.length; j++) {
 				chrome.tabs.move(tab_ids[j], {
 					windowId: parseInt(id, 10),
