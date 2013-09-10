@@ -219,6 +219,9 @@ function togglePin(call) {
 function splitSelected(parent, id) {
 	var obj = selected;
 	var tab_ids = obj.list;
+	if (id) {
+		id = parseInt(id, 10);
+	}
 	if (tab_ids.length > 0 && obj.type === 'Tab') {
 		if (!parent) {
 			chrome.windows.create({}, function (new_window) {
@@ -230,14 +233,25 @@ function splitSelected(parent, id) {
 				}
 			})
 		} else {
-			console.log(parent);
-			//get window object and copy tabs if incognito type
-			for (var j = 0; j < tab_ids.length; j++) {
-				chrome.tabs.move(tab_ids[j], {
-					windowId: parseInt(id, 10),
-					index: -1
-				});
-			}
+			var old_win_id;
+			chrome.windows.get(id, function (new_win) {
+				for (var i = 0; i < tab_ids.length; i++) {
+					old_win_id = parseInt($('#' + tab_ids[i]).parent().parent().parent().attr('id').split('_')[0], 10);
+					var tab = tab_ids[i];
+					console.log(tab);
+					chrome.windows.get(old_win_id, function (old_win) {
+						console.log(tab);
+						if (new_win.incognito || old_win.incognito) {
+							//Copy tab and delete previous one
+						} else {
+							chrome.tabs.move(tab, {
+								windowId: id,
+								index: -1
+							})
+						}
+					})
+				}
+			})
 		}
 	}
 	loadData();

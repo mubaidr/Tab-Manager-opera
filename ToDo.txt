@@ -1,12 +1,12 @@
 /*
 TO DO
-Current version:
-* Use backgorund page to get changes
-* Display no. of tabs in Badge
+---Current version---
+* Update Action panel.
 * Add keyboard short-cuts.
 * Performance improvements.
 
-Next Version:
+---NEXT VERSION---
+Session save/restore
 Expand/collapse list
 Add to speed-dial
 Add to stash
