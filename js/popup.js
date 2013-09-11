@@ -112,30 +112,28 @@ function showStatus(object, type, parent_id) {
 }
 
 function attachEvents(item) {
-	//Enable selection
 	$(item).on('click', function () {
 		var tab = event.target;
 		if (!activeMove) {
 			if (tab.type !== prev_type) {
 				prev_type = tab.type;
-				//Unselect all previous and select new
 				$('h4').removeClass('selected');
 			}
 			$(tab).toggleClass('selected');
 		} else {
 			if (tab.type === 'Window') {
-				chrome.windows.get(parseInt(tab.id, 10), function (win) {
-					if (!win.incognito) {
-						if (true) {
+				//chrome.windows.get(parseInt(tab.id, 10), function (win) {
+					//if (!win.incognito) {
+						//if (confirm ("This will copy the selected ta")) {
 							splitSelected(true, tab.id);
 							activeMove = false;
-						} else {
-							alert("Tabs can only be moved to and from normal Windows.");
-						}
-					} else {
-						alert("Tabs can only be moved to and from normal Windows.");
-					}
-				});
+						//} else {
+							//alert("Tabs can only be moved to and from normal Windows.");
+						//}
+					//} else {
+						//alert("Tabs can only be moved to and from normal Windows.");
+					//}
+				//});
 			} else {
 				alert("Please select Window.");
 			}

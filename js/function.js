@@ -233,20 +233,27 @@ function splitSelected(parent, id) {
 				}
 			})
 		} else {
-			var old_win_id;
+			var old_win_id, temp = [], tab;
 			chrome.windows.get(id, function (new_win) {
 				for (var i = 0; i < tab_ids.length; i++) {
 					old_win_id = parseInt($('#' + tab_ids[i]).parent().parent().parent().attr('id').split('_')[0], 10);
-					var tab = tab_ids[i];
-					console.log(tab);
+					temp.push(tab_ids[i]);
 					chrome.windows.get(old_win_id, function (old_win) {
-						console.log(tab);
+						tab = temp.pop();
 						if (new_win.incognito || old_win.incognito) {
-							//Copy tab and delete previous one
+							chrome.tabs.get(tab, function (old_tab) {
+								chrome.tabs.create({
+									windowId: new_win.id,
+									url: old_tab.url
+								})
+								chrome.tabs.remove(tab);
+							})
 						} else {
 							chrome.tabs.move(tab, {
 								windowId: id,
 								index: -1
+							}, function () {
+								loadData();
 							})
 						}
 					})
@@ -254,7 +261,6 @@ function splitSelected(parent, id) {
 			})
 		}
 	}
-	loadData();
 }
 
 function moveto() {
