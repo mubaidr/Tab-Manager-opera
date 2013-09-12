@@ -16,6 +16,6 @@ A add-on for Opera 15+, to easily manage Tabs/Windows by extension pop-up.
   <li>Toggle Private status for Selected Windows, Private all Windows or Un-Private all Windows</li>
   <li>Close Selected Tabs/Windows or Close all.</li>
   <li>Create new Tab in selected Window, or create a new Window</li>
-  <li>Auto split based on domain names (not cooked yet)</li>
+  <li>Remove duplicates</li>
   <li>and many more to come</li>
 </ul>
