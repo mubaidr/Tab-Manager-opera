@@ -113,7 +113,6 @@ function closeSelected(all) {
 }
 
 function makePrivate(call) {
-	//Check all normal and all private
 	if (call !== 0) {
 		var bool = true;
 		if (call === 2) {
@@ -122,26 +121,8 @@ function makePrivate(call) {
 		chrome.windows.getAll({
 			populate: true
 		}, function (wins) {
-			for (var k = 0; k < wins.length; k++) {
-				var win = wins[k];
-				if (win.incognito !== bool) {
-					chrome.windows.create({
-						incognito: bool,
-						focused: win.focused
-					}, function (new_win) {
-						for (var j = 0; j < win.tabs.length; j++) {
-							chrome.tabs.create({
-								windowId: new_win.id,
-								url: win.tabs[j].url,
-								selected: win.tabs[j].selected
-							});
-						}
-						chrome.tabs.remove(new_win.tabs[0].id);
-						chrome.windows.remove(win.id);
-					});
-				}
-			}
-		});
+
+		})
 	}
 	else {
 		var obj = selected;
