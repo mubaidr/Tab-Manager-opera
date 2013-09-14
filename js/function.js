@@ -156,7 +156,6 @@ function makePrivate(call) {
 				var temp = [], win;
 				for (var i = 0; i < wins.length; i++) {
 					temp.push(wins[i]);
-					console.log(temp);
 					if (bool !== wins[i].incognito) {
 						win = temp.pop();
 						chrome.windows.create({
@@ -167,7 +166,19 @@ function makePrivate(call) {
 							width: win.width,
 							height: win.height
 						}, function (new_win) {
-							console.log(win);
+							var tabs = [];
+							for (var j = 0; j < win.tabs.length; j++) {
+								tabs.push(win.tabs[j]);
+								var old_tab = tabs.pop();
+								chrome.tabs.create({
+									windowId: new_win.id,
+									url: old_tab.url
+								}, function (tab) {
+									log(tab)
+								});
+							}
+							chrome.tabs.remove(new_win.tabs[0].id);
+							chrome.windows.remove(win.id);
 						});
 					}
 				}
