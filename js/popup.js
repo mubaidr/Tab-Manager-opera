@@ -15,13 +15,11 @@ function loadData() {
 	}, function (windows) {
 		$('#tab_container').html('');
 		for (var i = 0; i < windows.length; i++) {
-			//log(windows[i]);
 			var win = windows[i];
 			var tabs = win.tabs;
 			addToList(win, 'Window');
 			for (var j = 0; j < tabs.length; j++) {
 				var tab = tabs[j];
-				//log(tab);
 				addToList(tab, 'Tab', win.id);
 			}
 		}
@@ -57,6 +55,26 @@ function addToList(object, type, parent_id) {
 			break;
 	}
 	showStatus(object, type, parent_id);
+}
+
+function addToRecentList(object) {
+	//Populate Recent Tabs list
+	var li = document.createElement('li');
+	var h4 = document.createElement('h4');
+	h4.title = object.url;
+	if (object.title !== '') {
+		h4.innerHTML = object.title;
+	} else {
+		h4.innerHTML = 'Untitled';
+	}	
+	$(li).append(h4);
+	$('#tab_container_recent').append(li);
+	$(h4).dblclick(function () {
+		var tab_url = this.title;
+		chrome.tabs.create({
+			url: tab_url
+		});
+	});
 }
 
 function showStatus(object, type, parent_id) {
@@ -206,13 +224,10 @@ function actionEvents() {
 	$('.subheading button').on('click', function (e) {
 		switch (e.target.id) {
 			case 'btn_all':
-				showAll();
-				break;
-			case 'btn_tabs':
-				showTabs();
+				showCurrentTabs(true);
 				break;
 			case 'btn_recent':
-				recentClosed();
+				showCurrentTabs(false);
 				break;
 			case 'btn_selected':
 				break;
@@ -224,18 +239,34 @@ function actionEvents() {
 	});
 }
 
-function showAll() {
-	loadData();
-	$('.right').show();
+function showCurrentTabs(check) {
+	if (check) {
+		$('.column.right').show();
+		$('#scroll_container').parent().css({
+			width: '70%'
+		});
+		$('#tab_container').show();
+		$('#tab_container_recent').hide();
+		$('#info').html("Welcome to Easy Tab Manager!");
+	} else {
+		$('.column.right').hide();
+		$('#scroll_container').parent().css({
+			width: '100%'
+		});
+		$('#tab_container').hide();
+		$('#tab_container_recent').show();
+		$('#info').html("Double click to restore a tab.");
+		loadRecentClosed();
+	}
 }
 
-function recentClosed() {
-	$('.right').hide();
-	$('#tab_container').html("");
+function loadRecentClosed() {	
 	chrome.history.search({
-		text: ""
+		text: ''
 	}, function (items) {
-		
+		for (var i = 0; i < items.length; i++) {
+			addToRecentList(items[i]);
+		}
 	})
 }
 
@@ -261,9 +292,4 @@ function tooltipEvents() {
 			url: '../html/help.html'
 		});
 	});
-}
-
-/*Debug code*/
-function log(i) {
-	console.log(i);
 }

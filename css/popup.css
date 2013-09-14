@@ -54,7 +54,7 @@ h2 {
 		background-color: white;
 		border: 1px solid rgba(2, 134, 233, 0.5);
 	}
-		
+
 		.subheading button:hover {
 			background-color: rgba(2, 134, 233, 1);
 			color: white;
@@ -136,7 +136,7 @@ h4 {
 	width: calc(100% - 5px);
 	height: calc(100% - 12px);
 	border: 1px solid #b6b6b6;
-	border-radius: 0 3px 3px 0;
+	border-radius: 3px 3px 3px 0;
 	box-shadow: 5px 0 5px -5px rgba(0,0,0,0.3);
 	border-left: none;
 	overflow-x: hidden;
@@ -172,6 +172,22 @@ h4 {
 	#tab_container h4:hover {
 	}
 
+#tab_container_recent {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style: none;
+	font-family: Calibri;
+}
+
+	#tab_container_recent li {
+		padding: 0;
+	}
+
+	#tab_container_recent > li > h4 {
+		font-size: 0.9em;
+	}
+	
 /*Tab,Windows status*/
 h4.selected {
 	border-color: #0286e9!important;
