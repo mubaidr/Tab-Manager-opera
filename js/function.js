@@ -113,46 +113,67 @@ function closeSelected(all) {
 }
 
 function makePrivate(call) {
-	if (call !== 0) {
-		var bool = true;
-		if (call === 2) {
-			bool = false;
-		}
-		chrome.windows.getAll({
-			populate: true
-		}, function (wins) {
-
-		})
-	}
-	else {
-		var obj = selected;
-		if (obj.list.length > 0 && obj.type === 'Window') {
-			for (var i = 0; i < obj.list.length; i++) {
-				chrome.windows.get(obj.list[i], {
-					populate: true
-				}, function (old_window) {
-					var incognito = true;
-					if (old_window.incognito) {
-						incognito = false;
-					}
-					chrome.windows.create({
-						incognito: incognito
-					}, function (new_window) {
-						for (var j = 0; j < old_window.tabs.length; j++) {
-							chrome.tabs.create({
-								windowId: new_window.id,
-								url: old_window.tabs[j].url,
-								selected: old_window.tabs[j].selected
-							});
+	switch (call) {
+		case 0:
+			var obj = selected;
+			if (obj.list.length > 0 && obj.type === 'Window') {
+				for (var i = 0; i < obj.list.length; i++) {
+					chrome.windows.get(obj.list[i], {
+						populate: true
+					}, function (old_window) {
+						var incognito = true;
+						if (old_window.incognito) {
+							incognito = false;
 						}
-						chrome.tabs.remove(new_window.tabs[0].id);
-						chrome.windows.remove(old_window.id);
+						chrome.windows.create({
+							incognito: incognito
+						}, function (new_window) {
+							for (var j = 0; j < old_window.tabs.length; j++) {
+								chrome.tabs.create({
+									windowId: new_window.id,
+									url: old_window.tabs[j].url,
+									selected: old_window.tabs[j].selected
+								});
+							}
+							chrome.tabs.remove(new_window.tabs[0].id);
+							chrome.windows.remove(old_window.id);
+						});
+
 					});
-
-				});
+				}
 			}
-
-		}
+			break;
+		case 1:
+		case 2:
+			var bool = true;
+			if (call === 2) {
+				bool = false
+			}
+			chrome.windows.getAll({
+				populate: true
+			},
+			function (wins) {
+				var temp = [], win;
+				for (var i = 0; i < wins.length; i++) {
+					temp.push(wins[i]);
+					console.log(temp);
+					if (bool !== wins[i].incognito) {
+						win = temp.pop();
+						chrome.windows.create({
+							incognito: bool,
+							focused: win.focused,
+							left: win.left,
+							top: win.top,
+							width: win.width,
+							height: win.height
+						}, function (new_win) {
+							console.log(win);
+						});
+					}
+				}
+			})
+			break;
+		default: break;
 	}
 }
 
