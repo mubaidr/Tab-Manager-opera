@@ -10,11 +10,18 @@
 </head>
 <body>
 	<div id="container">
-		<h1>Easy Tab Manager <span class="version_info">v1 Beta 4</span>			
+		<h1>Easy Tab Manager <span class="version_info">v1 Beta 4</span>
 		</h1>
-		<div class="clear subheading">			
-			<h2 class="subhead left">Tabs</h2>			
-			<h2 class="subhead right">Actions</h2>
+		<div class="clear subheading">
+			<div class="left">
+				<button id="btn_all" class="all">All</button>
+				<button id="btn_tabs" class="tab">Tabs only</button>
+				<button id="btn_recent" class="recent">Recently Closed</button>
+			</div>
+			<div class="right">
+				<button id="btn_selected" class="selected">Selected</button>
+				<button id="btn_allActions" class="allActions">All</button>
+			</div>
 		</div>
 		<div class="column left">
 			<div id="scroll_container">
@@ -56,7 +63,7 @@
 					<h3 class="move">Move or Split</h3>
 					<button id="btn_Move" class="two" title="Move tab(s) across Window.">Move</button>
 					<button id="btn_split" class="two" title="Move selected tab(s) to new Window.">Split</button>
-				</li>				
+				</li>
 				<li>
 					<h3 class="clone">Clone</h3>
 					<button id="btn_clone" title="Duplicates/Clones selected Tabs/Windows.">Selected</button>
@@ -66,7 +73,7 @@
 					<button id="btn_duplicate" title="Remove dupliction Tabs/Windows.">Remove</button>
 				</li>
 			</ul>
-			
+
 		</div>
 		<div class="clear bottom">
 			<div class="left">
@@ -76,10 +83,12 @@
 			</div>
 			<div class="right">
 				<span class="link">
-					<a href="#" title="View Options" style="display: none"><img alt="option" src="../img/option.png"/></a>
-					<a href="#" title="View Help Page"><img alt="help" src="../img/help.png" /></a>
+					<a href="#" title="View Options" style="display: none">
+						<img alt="option" src="../img/option.png" /></a>
+					<a href="#" title="View Help Page">
+						<img alt="help" src="../img/help.png" /></a>
 				</span>
-			</div>			
+			</div>
 		</div>
 	</div>
 	<div id="test"></div>

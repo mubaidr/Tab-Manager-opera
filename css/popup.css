@@ -17,11 +17,9 @@ h1 {
 	font-size: 1.3em;
 	margin: 0;
 	padding: 10px 0;
-	margin-bottom: 10px;
 	border-bottom: 10px solid #0f0f0f;
-	background-color: #1c7045;
-	box-shadow: 0 5px 5px 5px black;
-	background: #1c7045 url(../img/icon_128.png) 64px center no-repeat;
+	background-color: #0286e9;
+	background: #0286e9 url(../img/icon_128.png) 64px center no-repeat;
 	background-size: 32px;
 }
 
@@ -39,14 +37,36 @@ h2 {
 }
 
 .subheading {
-	display: none;
+	text-align: center;
+	vertical-align: middle;
+	padding: 5px 0;
+	height: 24px;
 }
+
+	.subheading .left {
+		
+	box-shadow: 5px 0 5px -5px rgba(0,0,0,0.3);
+	}
+
+	.subheading button {
+		font-size: x-small;
+		border: none;
+		border-radius: 3px;
+		cursor: pointer;
+		background-color: white;
+		border: 1px solid rgba(2, 134, 233, 0.5);
+	}
+		
+		.subheading button:hover {
+			background-color: rgba(2, 134, 233, 1);
+			color: white;
+		}
 
 h2.subhead {
 }
 
 h3 {
-	color: #1c7045;
+	color: rgba(0,0,0,0.7);
 	text-align: center;
 	font-size: 0.7em;
 	font-weight: 600;
@@ -59,7 +79,7 @@ h4 {
 	margin: 0;
 	width: calc(100% - 40px);
 	cursor: pointer;
-	font-size: 0.9em;
+	font-size: 1em;
 	font-weight: normal;
 	padding: 0 20px;
 	border: 1px solid rgba(0,0,0,.15);
@@ -70,7 +90,7 @@ h4 {
 }
 
 	h4:hover {
-		border-color: #1c7045;
+		border-color: #0286e9;
 	}
 
 #container {
@@ -95,7 +115,7 @@ h4 {
 }
 
 .bottom {
-	height: 40px;
+	height: 25px;
 	padding: 0 5px;
 	background-color: white;
 }
@@ -118,7 +138,7 @@ h4 {
 	width: calc(100% - 5px);
 	height: calc(100% - 12px);
 	border: 1px solid #b6b6b6;
-	border-radius: 0 0 3px 0;
+	border-radius: 0 3px 3px 0;
 	box-shadow: 5px 0 5px -5px rgba(0,0,0,0.3);
 	border-left: none;
 	overflow-x: hidden;
@@ -137,7 +157,6 @@ h4 {
 	}
 
 	#tab_container > li > h4 {
-		border-left: none;
 	}
 
 	#tab_container ul {
@@ -149,6 +168,7 @@ h4 {
 		}
 
 		#tab_container ul > li h4 {
+			font-size: 0.9em;
 		}
 
 	#tab_container h4:hover {
@@ -156,9 +176,9 @@ h4 {
 
 /*Tab,Windows status*/
 h4.selected {
-	border-color: #175E3A!important;
-	background-color: #1c7045!important;
-	box-shadow: 0 0 3px #1c7045;
+	border-color: #0286e9!important;
+	background-color: #0286e9!important;
+	box-shadow: 0 0 3px #0286e9;
 	color: white!important;
 }
 
@@ -166,7 +186,7 @@ h4.focused {
 	color: #0f0f0f;
 }
 
-#action_container {	
+#action_container {
 	padding-top: 10px;
 	height: 370px;
 	list-style: none;

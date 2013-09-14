@@ -122,18 +122,8 @@ function attachEvents(item) {
 			$(tab).toggleClass('selected');
 		} else {
 			if (tab.type === 'Window') {
-				//chrome.windows.get(parseInt(tab.id, 10), function (win) {
-					//if (!win.incognito) {
-						//if (confirm ("This will copy the selected ta")) {
-							splitSelected(true, tab.id);
-							activeMove = false;
-						//} else {
-							//alert("Tabs can only be moved to and from normal Windows.");
-						//}
-					//} else {
-						//alert("Tabs can only be moved to and from normal Windows.");
-					//}
-				//});
+				splitSelected(true, tab.id);
+				activeMove = false;
 			} else {
 				alert("Please select Window.");
 			}
@@ -213,6 +203,33 @@ function actionEvents() {
 				break;
 		}
 	});
+	$('.subheading button').on('click', function (e) {
+		switch (e.target.id) {
+			case 'btn_all':
+				showAll();
+				break;
+			case 'btn_tabs':
+				showTabs();
+				break;
+			case 'btn_recent':
+				break;
+			case 'btn_selected':
+				break;
+			case 'btn_allActions':
+				break;
+			default:
+				break;
+		}
+	});
+}
+
+function showAll() {
+	$('#tab_container h4').show();
+}
+
+function showTabs() {
+	$('#tab_container > li > h4').hide();
+	$('#tab_container > ul > li > h4').show();
 }
 
 function tooltipEvents() {
