@@ -22,12 +22,6 @@ chrome.runtime.onInstalled.addListener(function () {
 		color: [0, 114, 198, 255]
 	});
 })
-chrome.runtime.onStartup(function () {	
-	setText();
-	chrome.browserAction.setBadgeBackgroundColor({
-		color: [0, 114, 198, 255]
-	});
-})
 function sendMessage() {
 	var views = chrome.extension.getViews({
 		type: 'popup'
@@ -54,3 +48,4 @@ function setText() {
 chrome.browserAction.setBadgeBackgroundColor({
 	color: [0, 114, 198, 255]
 });
+setText();

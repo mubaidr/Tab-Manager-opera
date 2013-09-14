@@ -3,7 +3,21 @@ window.onload = function () {
 	loadData();
 	actionEvents();
 	tooltipEvents();
+	$.contextMenu({
+		// define which elements trigger this menu
+		selector: "h4",
+		// define the elements of the menu
+		items: {
+			foo: { name: "Foo", callback: function (key, opt) { alert("Foo!"); } },
+			bar: { name: "Bar", callback: function (key, opt) { alert("Bar!") } }
+		}
+		// there's more, have a look at the demos and docs...
+	});
 };
+
+function menuAction() {
+	
+}
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	if (request.type === 'reload') { loadData() };
