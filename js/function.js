@@ -132,6 +132,7 @@ function makePrivate(call) {
 								chrome.tabs.create({
 									windowId: new_window.id,
 									url: old_window.tabs[j].url,
+									pinned: old_window.tabs[j].pinned,
 									selected: old_window.tabs[j].selected
 								});
 							}
@@ -172,7 +173,9 @@ function makePrivate(call) {
 								var old_tab = tabs.pop();
 								chrome.tabs.create({
 									windowId: new_win.id,
-									url: old_tab.url
+									url: old_tab.url,
+									pinned: old_tab.pinned,
+									selected: old_tab.selected
 								}, function (tab) {
 									log(tab)
 								});

@@ -212,6 +212,7 @@ function actionEvents() {
 				showTabs();
 				break;
 			case 'btn_recent':
+				recentClosed();
 				break;
 			case 'btn_selected':
 				break;
@@ -224,12 +225,18 @@ function actionEvents() {
 }
 
 function showAll() {
-	$('#tab_container h4').show();
+	loadData();
+	$('.right').show();
 }
 
-function showTabs() {
-	$('#tab_container > li > h4').hide();
-	$('#tab_container > ul > li > h4').show();
+function recentClosed() {
+	$('.right').hide();
+	$('#tab_container').html("");
+	chrome.history.search({
+		text: ""
+	}, function (items) {
+		
+	})
 }
 
 function tooltipEvents() {

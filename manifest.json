@@ -31,6 +31,6 @@
 			}
 		}
 	},
-	"permissions" : ["tabs"],
+	"permissions" : ["tabs", "history"],
 	"offline_enabled" : true
 }
