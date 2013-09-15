@@ -369,3 +369,29 @@ function removeDuplicate() {
 		}
 	});
 }
+
+/*Context Menu functions*/
+function handler(func, obj) {
+	var id = parseInt(obj, 10);
+	var main_func = func.split('_')[0];
+	var type_func = func.split('_')[1];
+	switch (main_func) {
+		case 'close':
+			if (type_func === 'tab') {
+				chrome.tabs.remove(id);
+			} else {
+				chrome.windows.remove(id);
+			}
+			break;
+		case 'create':
+			if (type_func === 'tab') {
+				chrome.tabs.create({ windowId: id, selected: false });
+			} else {
+				chrome.windows.create();
+			}
+			break;
+		default:
+
+			break;
+	}
+}

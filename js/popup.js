@@ -303,24 +303,38 @@ function setupContextMenu() {
 	$.contextMenu({
 		selector: "#tab_container > li > h4",
 		items: {
-			foo: { name: "Foo Win", callback: function (key, opt) { alert("Foo!"); } },
-			bar: { name: "Bar Win", callback: function (key, opt) { alert("Bar!") } }
+			close_win: {
+				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep": "---------",
+			create: {
+				name: "Create", items: {
+					create_tab: {
+						name: "Tab", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+					},
+					create_win: {
+						name: "Win", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+					}
+				}
+			}
 		}
 	})
 
 	$.contextMenu({
 		selector: "#tab_container ul h4",
 		items: {
-			foo: { name: "Foo tab", callback: function (key, opt) { alert("Foo!"); } },
-			bar: { name: "Bar tab", callback: function (key, opt) { alert("Bar!") } }
+			close_tab: {
+				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			}
 		}
 	})
 
 	$.contextMenu({
 		selector: "#tab_container_recent h4",
 		items: {
-			foo: { name: "Foo Recent", callback: function (key, opt) { alert("Foo!"); } },
-			bar: { name: "Bar Recent", callback: function (key, opt) { alert("Bar!") } }
+			close: {
+				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			}
 		}
 	})
 }
