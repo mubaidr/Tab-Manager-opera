@@ -178,7 +178,8 @@ function togglePin(call) {
 		}, function (wins) {
 			for (var k = 0; k < wins.length; k++) {
 				var win = wins[k];
-				for (var j = win.tabs.length - 1; j > -1; j--) {
+				//for (var j = win.tabs.length - 1; j > -1; j--) {
+				for (var j = 0; j < win.tabs.length; j++) {
 					var tab = win.tabs[j];
 					chrome.tabs.update(tab.id, {
 						pinned: bool
@@ -192,9 +193,9 @@ function togglePin(call) {
 			if (obj.type === 'Tab') {
 				for (var j = 0; j < obj.list.length; j++) {
 					chrome.tabs.get(obj.list[j], function (tab) {
-						if (tab.pinned !== true) {
+						if (!tab.pinned) {
 							chrome.tabs.update(tab.id, {
-								pinned: pin
+								pinned: true
 							});
 						}
 					});
@@ -202,9 +203,9 @@ function togglePin(call) {
 			} else {
 				for (var j = 0; j < obj.list.length; j++) {
 					chrome.tabs.query({ windowId: obj.list[j] }, function (tab) {
-						if (tab.pinned !== true) {
+						if (!tab.pinned) {
 							chrome.tabs.update(tab.id, {
-								pinned: pin
+								pinned: true
 							});
 						}
 					});
@@ -365,10 +366,19 @@ function handler(func, obj) {
 			}
 			break;
 		case 'create':
-			if (type_func === 'tab') {
-				chrome.tabs.create({ windowId: id, selected: false });
-			} else {
-				chrome.windows.create();
+			switch (type_func) {
+				case 'tab':
+					chrome.tabs.create({ windowId: id, selected: false });
+					break;
+				case 'window':
+					chrome.windows.create();
+					break;
+				case 'winPrivate':
+					chrome.windows.create({
+						incognito: true
+					});
+					break;
+				default: break;
 			}
 			break;
 		case 'reload':
@@ -384,7 +394,23 @@ function handler(func, obj) {
 			}
 			break;
 		case 'pin':
-			chrome.tabs.update(id, { pinned: true })
+			if (type_func !== 'win') {
+				chrome.tabs.update(id, { pinned: true })
+			} else {
+				chrome.windows.get(id, { populate: true }, function (win) {
+					var tabs = win.tabs;
+					for (var i = 0; i < tabs.length; i++) {
+						chrome.tabs.update(tabs[i].id, {
+							pinned: true
+						});
+					}
+				});
+			}
+			break;
+		case 'pin':
+			chrome.tabs.update(tabs[i].id, {
+				pinned: false
+			});
 			break;
 		case 'private':
 			makePrivate(id);
@@ -399,8 +425,16 @@ function handler(func, obj) {
 		case 'duplicate':
 			removeDuplicateLocal(id);
 			break;
+		case 'split':
+			chrome.windows.create(function (win) {
+				chrome.tabs.move(id, {
+					windowId: win.id,
+					index: -1
+				});
+				chrome.tabs.remove(win.tabs[0].id);
+			});
+			break;
 		default:
-
 			break;
 	}
 }

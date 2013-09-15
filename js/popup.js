@@ -328,8 +328,11 @@ function setupContextMenu() {
 					create_tab: {
 						name: "Tab", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 					},
-					create_win: {
-						name: "Win", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+					create_window: {
+						name: "Window", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+					},
+					create_winPrivate: {
+						name: "Private Window", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 					}
 				}
 			},
@@ -350,6 +353,10 @@ function setupContextMenu() {
 			},
 			duplicate: {
 				name: "Remove Duplicates", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep4": "---------",
+			pin_win: {
+				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
@@ -367,9 +374,16 @@ function setupContextMenu() {
 			pin: {
 				name: "Pin", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
+			unpin: {
+				name: "UnPin", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
 			"sep2": "---------",
 			clone_tab: {
 				name: "Clone", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep3": "---------",
+			split_tab: {
+				name: "Split", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
@@ -377,8 +391,8 @@ function setupContextMenu() {
 	$.contextMenu({
 		selector: "#tab_container_recent h4",
 		items: {
-			close: {
-				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			open: {
+				name: "Open", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
