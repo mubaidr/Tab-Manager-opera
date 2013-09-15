@@ -19,7 +19,7 @@ function focusTab(id, type) {
 function getSelected() {
 	deSelect();
 	$('.selected').each(function (i, item) {
-		selected.list.push(id);
+		selected.list.push(parseInt(item.id, 10));
 	});
 }
 
