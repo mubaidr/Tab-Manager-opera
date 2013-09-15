@@ -186,6 +186,24 @@ h4 {
 
 	#tab_container_recent > li > h4 {
 		font-size: 0.9em;
+		background: url('../img/history.PNG') left center no-repeat;
+		background-size: 16px;
+	}
+
+#tab_container_bookmarks {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style: none;
+	font-family: Calibri;
+}
+
+	#tab_container_bookmarks li {
+		padding: 0;
+	}
+
+	#tab_container_bookmarks > li > h4 {
+		font-size: 0.9em;
 	}
 	
 /*Tab,Windows status*/

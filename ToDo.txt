@@ -1,23 +1,18 @@
 /*
 TO DO
 ---Current version---
+* Context menu fixes
 * Merge windows
 * Update Action panel.
 * Add keyboard short-cuts.
 * Performance improvements.
 
 ---NEXT VERSION---
-Session save/restore
 Expand/collapse list
 Add to speed-dial
 Add to stash
 Add bookmark
 Options Page.
 Tab search filter.
-Nick names for Windows/Tabs.
-Make windows/tabs persistent.
-recent closed tabs menu.
-reload after some time.
-Use right click for all actions.
 tab thumbnails on hover.
 */

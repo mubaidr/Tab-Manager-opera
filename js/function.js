@@ -178,7 +178,7 @@ function togglePin(call) {
 		}, function (wins) {
 			for (var k = 0; k < wins.length; k++) {
 				var win = wins[k];
-				for (var j = 0; j < win.tabs.length; j++) {
+				for (var j = win.tabs.length - 1; j > -1; j--) {
 					var tab = win.tabs[j];
 					chrome.tabs.update(tab.id, {
 						pinned: bool
@@ -191,16 +191,22 @@ function togglePin(call) {
 		if (obj.list.length > 0) {
 			if (obj.type === 'Tab') {
 				for (var j = 0; j < obj.list.length; j++) {
-					var pin = true;
 					chrome.tabs.get(obj.list[j], function (tab) {
-						if (tab.pinned === true) {
-							pin = false;
-						} else {
-							pin = true;
+						if (tab.pinned !== true) {
+							chrome.tabs.update(tab.id, {
+								pinned: pin
+							});
 						}
-						chrome.tabs.update(tab.id, {
-							pinned: pin
-						});
+					});
+				}
+			} else {
+				for (var j = 0; j < obj.list.length; j++) {
+					chrome.tabs.query({ windowId: obj.list[j] }, function (tab) {
+						if (tab.pinned !== true) {
+							chrome.tabs.update(tab.id, {
+								pinned: pin
+							});
+						}
 					});
 				}
 			}

@@ -16,8 +16,9 @@
 		</h1>
 		<div class="clear subheading">
 			<div class="left">
-				<button id="btn_all" class="all">All</button>
-				<button id="btn_recent" class="recent">Recently Closed</button>
+				<button id="btn_all" class="all">Current</button>
+				<button id="btn_recent" class="recent">History</button>
+				<button id="btn_bookmarks" class="recent">Bookmarks</button>
 			</div>
 			<div class="right" style="display: none">
 				<button id="btn_selected" class="selectedActions">Selected</button>
@@ -27,7 +28,8 @@
 		<div class="column left">
 			<div id="scroll_container">
 				<ul id="tab_container"></ul>
-				<ul id="tab_container_recent"></ul>
+				<ul id="tab_container_recent" style="display: none"></ul>
+				<ul id="tab_container_bookmarks" style="display: none"></ul>
 			</div>
 		</div>
 		<div class="column right">

@@ -10,10 +10,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	if (request.type === 'reload') { loadData() };
 });
 
-function menuAction() {
-	alert("Context menu function");
-}
-
 function loadData() {
 	chrome.windows.getAll({
 		populate: true
@@ -234,6 +230,9 @@ function actionEvents() {
 			case 'btn_recent':
 				showCurrentTabs(false);
 				break;
+			case 'btn_bookmarks':
+				showCurrentTabs('b');
+				break;
 			case 'btn_selected':
 				break;
 			case 'btn_allActions':
@@ -245,24 +244,41 @@ function actionEvents() {
 }
 
 function showCurrentTabs(check) {
-	if (check) {
-		$('.column.right').show();
-		$('#scroll_container').parent().css({
-			width: '70%'
-		});
-		$('#tab_container').show();
-		$('#tab_container_recent').hide();
-		$('#info').html("Welcome to Easy Tab Manager!");
-	} else {
-		$('.column.right').hide();
-		$('#scroll_container').parent().css({
-			width: '100%'
-		});
-		$('#tab_container').hide();
-		$('#tab_container_recent').show();
-		$('#info').html("Double click to restore a tab.");
-		loadRecentClosed();
-	}
+	switch (check) {
+		case true:
+			$('.column.right').show();
+			$('#scroll_container').parent().css({
+				width: '70%'
+			});
+			$('#tab_container').show();
+			$('#tab_container_recent').hide();
+			$('#tab_container_bookmarks').hide();
+			$('#info').html("Welcome to Easy Tab Manager!");
+			break;
+		case false:
+			$('.column.right').hide();
+			$('#scroll_container').parent().css({
+				width: '100%'
+			});
+			$('#tab_container').hide();
+			$('#tab_container_recent').show();
+			$('#tab_container_bookmarks').hide();
+			$('#info').html("Double click to restore a tab.");
+			loadRecentClosed();
+			break;
+		case 'b':
+			$('.column.right').hide();
+			$('#scroll_container').parent().css({
+				width: '100%'
+			});
+			$('#tab_container').hide();
+			$('#tab_container_recent').hide();
+			$('#tab_container_bookmarks').show();
+			$('#info').html("Double click to open a bookmark in background tab.");
+			loadBookmarks();
+			break;
+		default: break;
+	}	
 }
 
 function loadRecentClosed() {
@@ -273,6 +289,10 @@ function loadRecentClosed() {
 			addToRecentList(items[i]);
 		}
 	})
+}
+
+function loadBookmarks() {
+
 }
 
 function tooltipEvents() {
@@ -329,7 +349,7 @@ function setupContextMenu() {
 				name: "Clone", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			duplicate: {
-				name: "Remove Duplicate", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+				name: "Remove Duplicates", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
