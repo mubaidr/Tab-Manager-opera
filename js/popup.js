@@ -62,6 +62,7 @@ function addToRecentList(object) {
 	//Populate Recent Tabs list
 	var li = document.createElement('li');
 	var h4 = document.createElement('h4');
+	h4.id = object.id;
 	h4.title = object.url;
 	if (object.title !== '') {
 		h4.innerHTML = object.title;
@@ -282,6 +283,7 @@ function showCurrentTabs(check) {
 }
 
 function loadRecentClosed() {
+	$('#tab_container_recent').html('');
 	chrome.history.search({
 		text: ''
 	}, function (items) {
@@ -391,8 +393,11 @@ function setupContextMenu() {
 	$.contextMenu({
 		selector: "#tab_container_recent h4",
 		items: {
-			open: {
-				name: "Open", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			open_recent: {
+				name: "Open", callback: function (key, opt) { recentHandler(key, opt.$trigger.attr("title")) }
+			},
+			delete_recent: {
+				name: "Delete", callback: function (key, opt) { recentHandler(key, opt.$trigger.attr("title")) }
 			}
 		}
 	})

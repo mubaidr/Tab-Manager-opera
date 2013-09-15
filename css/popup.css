@@ -106,8 +106,21 @@ h4 {
 	overflow: hidden;
 }
 
+.toggle_column{
+	display: none;
+	float: left;
+	font-size: small;
+	color: white;
+	background-color: rgba(2, 134, 233, 0.5);
+	height: 390px;
+	width: 10px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
 .right {
 	float: right;
+	width: calc(30% - 10px);
 	width: 30%;
 	background-color: white;
 }

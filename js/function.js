@@ -483,3 +483,20 @@ function handler(func, obj) {
 			break;
 	}
 }
+
+function recentHandler(func, url) {	
+	switch (func) {
+		case 'open_recent':
+			chrome.tabs.create({
+				url: url
+			});
+			break;
+		case 'delete_recent':
+			chrome.history.deleteUrl({
+				url: url
+			});
+			loadRecentClosed();
+			break;
+		default: break;
+	}
+}
