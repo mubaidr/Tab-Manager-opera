@@ -3,13 +3,7 @@ window.onload = function () {
 	loadData();
 	actionEvents();
 	tooltipEvents();
-	$.contextMenu({
-		selector: "h4",
-		items: {
-			foo: { name: "Foo", callback: function (key, opt) { alert("Foo!"); } },
-			bar: { name: "Bar", callback: function (key, opt) { alert("Bar!") } }
-		}
-	});
+	setupContextMenu();
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -77,7 +71,7 @@ function addToRecentList(object) {
 		h4.innerHTML = object.title;
 	} else {
 		h4.innerHTML = 'Untitled';
-	}	
+	}
 	$(li).append(h4);
 	$('#tab_container_recent').append(li);
 	$(h4).dblclick(function () {
@@ -271,7 +265,7 @@ function showCurrentTabs(check) {
 	}
 }
 
-function loadRecentClosed() {	
+function loadRecentClosed() {
 	chrome.history.search({
 		text: ''
 	}, function (items) {
@@ -303,4 +297,30 @@ function tooltipEvents() {
 			url: '../html/help.html'
 		});
 	});
+}
+
+function setupContextMenu() {
+	$.contextMenu({
+		selector: "#tab_container > li > h4",
+		items: {
+			foo: { name: "Foo Win", callback: function (key, opt) { alert("Foo!"); } },
+			bar: { name: "Bar Win", callback: function (key, opt) { alert("Bar!") } }
+		}
+	})
+
+	$.contextMenu({
+		selector: "#tab_container ul h4",
+		items: {
+			foo: { name: "Foo tab", callback: function (key, opt) { alert("Foo!"); } },
+			bar: { name: "Bar tab", callback: function (key, opt) { alert("Bar!") } }
+		}
+	})
+
+	$.contextMenu({
+		selector: "#tab_container_recent h4",
+		items: {
+			foo: { name: "Foo Recent", callback: function (key, opt) { alert("Foo!"); } },
+			bar: { name: "Bar Recent", callback: function (key, opt) { alert("Bar!") } }
+		}
+	})
 }
