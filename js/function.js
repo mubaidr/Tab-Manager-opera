@@ -118,29 +118,7 @@ function makePrivate(call) {
 			var obj = selected;
 			if (obj.list.length > 0 && obj.type === 'Window') {
 				for (var i = 0; i < obj.list.length; i++) {
-					chrome.windows.get(obj.list[i], {
-						populate: true
-					}, function (old_window) {
-						var incognito = true;
-						if (old_window.incognito) {
-							incognito = false;
-						}
-						chrome.windows.create({
-							incognito: incognito
-						}, function (new_window) {
-							for (var j = 0; j < old_window.tabs.length; j++) {
-								chrome.tabs.create({
-									windowId: new_window.id,
-									url: old_window.tabs[j].url,
-									pinned: old_window.tabs[j].pinned,
-									selected: old_window.tabs[j].selected
-								});
-							}
-							chrome.tabs.remove(new_window.tabs[0].id);
-							chrome.windows.remove(old_window.id);
-						});
-
-					});
+					makePrivate(obj.list[i]);
 				}
 			}
 			break;
@@ -324,25 +302,7 @@ function clone() {
 	if (obj.list.length > 0) {
 		if (obj.type === 'Window') {
 			for (var i = 0; i < obj.list.length; i++) {
-				chrome.windows.get(obj.list[i], {
-					populate: true
-				}, function (old_win) {
-					chrome.windows.create({
-						focused: old_win.focused,
-						incognito: old_win.incognito
-					}, function (new_win) {
-						var old_tabs = old_win.tabs;
-						for (var j = 0; j < old_tabs.length; j++) {
-							chrome.tabs.create({
-								windowId: new_win.id,
-								url: old_tabs[j].url,
-								selected: false
-							});
-							//chrome.tabs.duplicate(old_tabs[j].id);
-						}
-						chrome.tabs.remove(new_win.tabs[0].id);
-					});
-				});
+				cloneWin(obj.list[i]);
 			}
 		} else {
 			var tab_ids = obj.list;
@@ -370,6 +330,21 @@ function removeDuplicate() {
 	});
 }
 
+function removeDuplicateLocal(id) {
+	chrome.windows.get(id, {
+		populate: true
+	}, function (win) {
+		var tabs = win.tabs;
+		for (var l = 0; l < tabs.length; l++) {
+			for (var j = 0; j < tabs.length && j !== l; j++) {
+				if (tabs[j].url === tabs[l].url) {
+					chrome.tabs.remove(tabs[j].id);
+				}
+			}
+		}
+	})
+}
+
 /*Context Menu functions*/
 function handler(func, obj) {
 	var id = parseInt(obj, 10);
@@ -390,8 +365,81 @@ function handler(func, obj) {
 				chrome.windows.create();
 			}
 			break;
+		case 'reload':
+			if (type_func === 'tab') {
+				chrome.tabs.reload(id);
+			} else {
+				chrome.windows.get(id, { populate: true }, function (win) {
+					var tabs = win.tabs;
+					for (var i = 0; i < tabs.length; i++) {
+						chrome.tabs.reload(tabs[i].id);
+					}
+				});
+			}
+			break;
+		case 'pin':
+			chrome.tabs.update(id, { pinned: true })
+			break;
+		case 'private':
+			makePrivate(id);
+			break;
+		case 'clone':
+			if (type_func === 'tab') {
+				chrome.tabs.duplicate(id);
+			} else {
+				cloneWin(id);
+			}
+			break;
+		case 'duplicate':
+			removeDuplicateLocal(id);
+			break;
 		default:
 
 			break;
 	}
+}
+
+function cloneWin(id) {
+	chrome.windows.get(id, { populate: true }, function (win) {
+		chrome.windows.create({
+			focused: win.focused,
+			incognito: win.incognito
+		}, function (new_win) {
+			var tabs = win.tabs;
+			for (var j = 0; j < tabs.length; j++) {
+				chrome.tabs.create({
+					windowId: new_win.id,
+					url: tabs[j].url,
+					selected: false
+				});
+			}
+			chrome.tabs.remove(new_win.tabs[0].id);
+		})
+	});
+}
+
+function makePrivate(id) {
+	chrome.windows.get(id, {
+		populate: true
+	}, function (old_window) {
+		var incognito = true;
+		if (old_window.incognito) {
+			incognito = false;
+		}
+		chrome.windows.create({
+			incognito: incognito
+		}, function (new_window) {
+			for (var j = 0; j < old_window.tabs.length; j++) {
+				chrome.tabs.create({
+					windowId: new_window.id,
+					url: old_window.tabs[j].url,
+					pinned: old_window.tabs[j].pinned,
+					selected: old_window.tabs[j].selected
+				});
+			}
+			chrome.tabs.remove(new_window.tabs[0].id);
+			chrome.windows.remove(old_window.id);
+		});
+
+	});
 }
