@@ -352,6 +352,51 @@ function removeDuplicateLocal(id) {
 	})
 }
 
+function cloneWin(id) {
+	chrome.windows.get(id, { populate: true }, function (win) {
+		chrome.windows.create({
+			focused: win.focused,
+			incognito: win.incognito
+		}, function (new_win) {
+			var tabs = win.tabs;
+			for (var j = 0; j < tabs.length; j++) {
+				chrome.tabs.create({
+					windowId: new_win.id,
+					url: tabs[j].url,
+					selected: false
+				});
+			}
+			chrome.tabs.remove(new_win.tabs[0].id);
+		})
+	});
+}
+
+function makePrivate(id) {
+	chrome.windows.get(id, {
+		populate: true
+	}, function (old_window) {
+		var incognito = true;
+		if (old_window.incognito) {
+			incognito = false;
+		}
+		chrome.windows.create({
+			incognito: incognito
+		}, function (new_window) {
+			for (var j = 0; j < old_window.tabs.length; j++) {
+				chrome.tabs.create({
+					windowId: new_window.id,
+					url: old_window.tabs[j].url,
+					pinned: old_window.tabs[j].pinned,
+					selected: old_window.tabs[j].selected
+				});
+			}
+			chrome.tabs.remove(new_window.tabs[0].id);
+			chrome.windows.remove(old_window.id);
+		});
+
+	});
+}
+
 /*Context Menu functions*/
 function handler(func, obj) {
 	var id = parseInt(obj, 10);
@@ -437,49 +482,4 @@ function handler(func, obj) {
 		default:
 			break;
 	}
-}
-
-function cloneWin(id) {
-	chrome.windows.get(id, { populate: true }, function (win) {
-		chrome.windows.create({
-			focused: win.focused,
-			incognito: win.incognito
-		}, function (new_win) {
-			var tabs = win.tabs;
-			for (var j = 0; j < tabs.length; j++) {
-				chrome.tabs.create({
-					windowId: new_win.id,
-					url: tabs[j].url,
-					selected: false
-				});
-			}
-			chrome.tabs.remove(new_win.tabs[0].id);
-		})
-	});
-}
-
-function makePrivate(id) {
-	chrome.windows.get(id, {
-		populate: true
-	}, function (old_window) {
-		var incognito = true;
-		if (old_window.incognito) {
-			incognito = false;
-		}
-		chrome.windows.create({
-			incognito: incognito
-		}, function (new_window) {
-			for (var j = 0; j < old_window.tabs.length; j++) {
-				chrome.tabs.create({
-					windowId: new_window.id,
-					url: old_window.tabs[j].url,
-					pinned: old_window.tabs[j].pinned,
-					selected: old_window.tabs[j].selected
-				});
-			}
-			chrome.tabs.remove(new_window.tabs[0].id);
-			chrome.windows.remove(old_window.id);
-		});
-
-	});
 }
