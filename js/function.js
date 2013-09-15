@@ -19,7 +19,7 @@ function focusTab(id, type) {
 function getSelected() {
 	deSelect();
 	$('.selected').each(function (i, item) {
-		selected.list.push(parseInt(item.id, 10));
+		selected.list.push(id);
 	});
 }
 
@@ -176,8 +176,6 @@ function makePrivate(call) {
 									url: old_tab.url,
 									pinned: old_tab.pinned,
 									selected: old_tab.selected
-								}, function (tab) {
-									log(tab)
 								});
 							}
 							chrome.tabs.remove(new_win.tabs[0].id);
@@ -310,7 +308,6 @@ function reload(bool) {
 					chrome.windows.get(arr[i], {
 						populate: true
 					}, function (win) {
-						log(win)
 						for (var j = 0; j < win.tabs.length; j++) {
 							var tab = win.tabs[j];
 							chrome.tabs.reload(tab.id);
