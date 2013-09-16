@@ -3,9 +3,7 @@ TO DO
 ---Current version---
 * Close items to botom or up
 * Reopen last closed tab
-* Context menu fixes
 * Merge windows
-* Update Action panel.
 * Add keyboard short-cuts.
 * Performance improvements.
 
