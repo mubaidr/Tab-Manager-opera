@@ -176,16 +176,16 @@ function actionEvents() {
 				togglePin(2);
 				break;
 			case 'btn_Private': //Done
-				makePrivate(0);
+				PrivateSelected(0);
 				break;
 			case 'btn_Private_all': //Done
 				if (confirm('Are you sure you want to make all Windows Private?')) {
-					makePrivate(1);
+					PrivateSelected(1);
 				}
 				break;
 			case 'btn_Normal_all': //Done
 				if (confirm('Are you sure you want to make all Windows Normal?')) {
-					makePrivate(2);
+					PrivateSelected(2);
 				}
 				break;
 			case 'btn_close': //Done
