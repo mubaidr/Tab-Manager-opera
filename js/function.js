@@ -452,7 +452,7 @@ function handler(func, obj) {
 				});
 			}
 			break;
-		case 'pin':
+		case 'unpin':
 			chrome.tabs.update(tabs[i].id, {
 				pinned: false
 			});

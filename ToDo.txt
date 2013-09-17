@@ -1,6 +1,7 @@
 /*
 TO DO
 ---Current version---
+* Context menu UnPin does not work
 * Close items to botom or up
 * Reopen last closed tab
 * Merge windows
