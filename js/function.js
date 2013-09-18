@@ -402,104 +402,140 @@ function handler(func, obj) {
 	var id = parseInt(obj, 10);
 	var main_func = func.split('_')[0];
 	var type_func = func.split('_')[1];
-	switch (main_func) {
-		case 'close':
-			if (type_func === 'tab') {
-				chrome.tabs.remove(id);
-			} else {
-				chrome.windows.remove(id);
-			}
-			break;
-		case 'create':
-			switch (type_func) {
-				case 'tab':
-					chrome.tabs.create({ windowId: id, selected: false });
-					break;
-				case 'window':
-					chrome.windows.create();
-					break;
-				case 'winPrivate':
-					chrome.windows.create({
-						incognito: true
-					});
-					break;
-				default: break;
-			}
-			break;
-		case 'reload':
-			if (type_func === 'tab') {
-				chrome.tabs.reload(id);
-			} else {
-				if (confirm('Are you sure you want to reload all tabs in this window?')) {
+	getSelected();
+	var count = selected.list.length;
+	if (!count) {//IF there are selected items
+		switch (main_func) {
+			case 'close':
+				closeSelected();
+				break;
+			case 'create':
+				createNew('Tab');
+				break;
+			case 'reload':
+				reload();
+				break;
+			case 'pin':
+				togglePin(0);
+				break;
+			case 'unpin':
+				
+				break;
+			case 'private':
+				PrivateSelected(0);
+				break;
+			case 'clone':
+				clone();
+				break;
+			case 'duplicate':
+				removeDuplicate();
+				break;
+			case 'split':
+				splitSelected(false);
+				break;
+			default:
+				break;
+		}
+	} else {//If no selected items
+		switch (main_func) {
+			case 'close':
+				if (type_func === 'tab') {
+					chrome.tabs.remove(id);
+				} else {
+					chrome.windows.remove(id);
+				}
+				break;
+			case 'create':
+				switch (type_func) {
+					case 'tab':
+						chrome.tabs.create({ windowId: id, selected: false });
+						break;
+					case 'window':
+						chrome.windows.create();
+						break;
+					case 'winPrivate':
+						chrome.windows.create({
+							incognito: true
+						});
+						break;
+					default: break;
+				}
+				break;
+			case 'reload':
+				if (type_func === 'tab') {
+					chrome.tabs.reload(id);
+				} else {
+					if (confirm('Are you sure you want to reload all tabs in this window?')) {
+						chrome.windows.get(id, { populate: true }, function (win) {
+							var tabs = win.tabs;
+							for (var i = 0; i < tabs.length; i++) {
+								chrome.tabs.reload(tabs[i].id);
+							}
+						});
+					}
+				}
+				break;
+			case 'pin':
+				if (type_func !== 'win') {
+					chrome.tabs.update(id, { pinned: true })
+				} else {
 					chrome.windows.get(id, { populate: true }, function (win) {
 						var tabs = win.tabs;
 						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.reload(tabs[i].id);
+							chrome.tabs.update(tabs[i].id, {
+								pinned: true
+							});
 						}
 					});
 				}
-			}
-			break;
-		case 'pin':
-			if (type_func !== 'win') {
-				chrome.tabs.update(id, { pinned: true })
-			} else {
-				chrome.windows.get(id, { populate: true }, function (win) {
-					var tabs = win.tabs;
-					for (var i = 0; i < tabs.length; i++) {
-						chrome.tabs.update(tabs[i].id, {
-							pinned: true
-						});
-					}
+				break;
+			case 'unpin':
+				chrome.tabs.update(id, {
+					pinned: false
 				});
-			}
-			break;
-		case 'unpin':
-			chrome.tabs.update(id, {
-				pinned: false
-			});
-			break;
-		case 'private':
-			makePrivate(id);
-			break;
-		case 'clone':
-			if (type_func === 'tab') {
-				chrome.tabs.duplicate(id);
-			} else {
-				cloneWin(id);
-			}
-			break;
-		case 'duplicate':
-			removeDuplicateLocal(id);
-			break;
-		case 'split':
-			chrome.tabs.get(id, function (tab) {
-				chrome.windows.get(tab.windowId, function (win) {
-					if (win.incognito) {
-						chrome.windows.create({
-							incognito: true
-						}, function (win) {
-							chrome.tabs.create({
-								windowId: win.id,
-								url: tab.url
+				break;
+			case 'private':
+				makePrivate(id);
+				break;
+			case 'clone':
+				if (type_func === 'tab') {
+					chrome.tabs.duplicate(id);
+				} else {
+					cloneWin(id);
+				}
+				break;
+			case 'duplicate':
+				removeDuplicateLocal(id);
+				break;
+			case 'split':
+				chrome.tabs.get(id, function (tab) {
+					chrome.windows.get(tab.windowId, function (win) {
+						if (win.incognito) {
+							chrome.windows.create({
+								incognito: true
+							}, function (win) {
+								chrome.tabs.create({
+									windowId: win.id,
+									url: tab.url
+								});
+								chrome.tabs.remove(win.tabs[0].id);
+								chrome.tabs.remove(id);
 							});
-							chrome.tabs.remove(win.tabs[0].id);
-							chrome.tabs.remove(id);
-						});
-					} else {
-						chrome.windows.create(function (win) {
-							chrome.tabs.move(id, {
-								windowId: win.id,
-								index: -1
+						} else {
+							chrome.windows.create(function (win) {
+								chrome.tabs.move(id, {
+									windowId: win.id,
+									index: -1
+								});
+								chrome.tabs.remove(win.tabs[0].id);
 							});
-							chrome.tabs.remove(win.tabs[0].id);
-						});
-					}
-				})
-			});				
-			break;
-		default:
-			break;
+						}
+					})
+				});
+				break;
+			default:
+				break;
+		}
 	}
 }
 
