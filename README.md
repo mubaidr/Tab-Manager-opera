@@ -6,6 +6,7 @@ A add-on for Opera 15+, to easily manage Tabs/Windows.
 <ul>
 	<li>Display all Tabs (URL on mouse hover) & Windows</li>
 	<li>Split Selected tabs to new Window</li>
+	<li>Merge multiple windows into one</li>
 	<li>Switch to any Tab/Window by Double Click</li>
 	<li>Clone Tabs/Windows</li>
 	<li>Reload selected Tabs or Windows</li>
@@ -16,7 +17,7 @@ A add-on for Opera 15+, to easily manage Tabs/Windows.
 	<li>Create new Tab in selected Window, or create a new Window</li>
 	<li>Remove duplicates</li>
 	<li>Recent tabs list</li>
-	<li>Context menu for all items</li>
+	<li>Context menu for all items and actions</li>
 	<li>and much more to come</li>
 </ul>
 
