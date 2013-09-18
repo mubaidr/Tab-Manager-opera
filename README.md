@@ -16,6 +16,7 @@ A add-on for Opera 15+, to easily manage Tabs/Windows.
 	<li>Create new Tab in selected Window, or create a new Window</li>
 	<li>Remove duplicates</li>
 	<li>Recent tabs list</li>
+	<li>Context menu for all items</li>
 	<li>and much more to come</li>
 </ul>
 
