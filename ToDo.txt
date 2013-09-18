@@ -1,9 +1,9 @@
 /*
 TO DO
 ---Current version---
-* Context menu UnPin does not work
-* Close items to botom or up
-* Reopen last closed tab
+* Close items to botom or up tab context menu
+* Reopen last closed tab context menu (ADd to window context menu)
+* Create tab before or after context menu
 * Merge windows
 * Add keyboard short-cuts.
 * Performance improvements.
@@ -12,7 +12,7 @@ TO DO
 Expand/collapse list
 Add to speed-dial
 Add to stash
-Add bookmark
+Add to bookmarks
 Options Page.
 Tab search filter.
 tab thumbnails on hover.

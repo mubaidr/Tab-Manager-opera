@@ -279,7 +279,7 @@ function showCurrentTabs(check) {
 			loadBookmarks();
 			break;
 		default: break;
-	}	
+	}
 }
 
 function loadRecentClosed() {
@@ -366,26 +366,39 @@ function setupContextMenu() {
 	$.contextMenu({
 		selector: "#tab_container ul h4",
 		items: {
-			reload_tab: {
-				name: "Reload", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
-			},
-			close_tab: {
-				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
-			},
-			"sep1": "---------",
 			pin: {
 				name: "Pin", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			unpin: {
 				name: "UnPin", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
-			"sep2": "---------",
+			"sep0": "---------",
+			createLeft_tab: {
+				name: "Create Tab before", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			createRight_tab: {
+				name: "Create Tab after", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep1": "---------",
 			clone_tab: {
 				name: "Clone", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
-			"sep3": "---------",
+			"sep2": "---------",
 			split_tab: {
 				name: "Split", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep3": "---------",
+			reload_tab: {
+				name: "Reload", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			closeLeft_tab: {
+				name: "Close tabs above", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			close_tab: {
+				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			closeRight_tab: {
+				name: "Close tabs below", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
