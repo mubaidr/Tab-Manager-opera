@@ -3,7 +3,7 @@ window.onload = function () {
 	loadData();
 	actionEvents();
 	tooltipEvents();
-	setupContextMenu();
+	setupContextMenu();	
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -373,10 +373,10 @@ function setupContextMenu() {
 				name: "UnPin", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			"sep0": "---------",
-			createLeft_tab: {
+			create_tabLeft: {
 				name: "Create Tab before", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
-			createRight_tab: {
+			create_tabRight: {
 				name: "Create Tab after", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			"sep1": "---------",
@@ -391,13 +391,13 @@ function setupContextMenu() {
 			reload_tab: {
 				name: "Reload", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
-			closeLeft_tab: {
+			close_tabLeft: {
 				name: "Close tabs above", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			close_tab: {
 				name: "Close", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
-			closeRight_tab: {
+			close_tabRight: {
 				name: "Close tabs below", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}

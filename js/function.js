@@ -439,10 +439,22 @@ function handler(func, obj) {
 	} else {//If no selected items
 		switch (main_func) {
 			case 'close':
-				if (type_func === 'tab') {
-					chrome.tabs.remove(id);
-				} else {
-					chrome.windows.remove(id);
+				switch (type_func) {
+					case 'tab':
+						chrome.tabs.remove(id);
+						break;
+					case 'window':
+						chrome.windows.remove(id);
+						break;
+					case 'tabLeft':
+						chrome.tabs.get(id, function (tab) {
+							
+						});
+						break;
+					case 'tabRight':
+						
+						break;
+					default: break;
 				}
 				break;
 			case 'create':
@@ -456,6 +468,20 @@ function handler(func, obj) {
 					case 'winPrivate':
 						chrome.windows.create({
 							incognito: true
+						});
+						break;
+					case 'tabLeft':
+						chrome.tabs.get(id, function (tab) {
+							chrome.tabs.create({
+								index: tab.index
+							})
+						});
+						break;
+					case 'tabRight':
+						chrome.tabs.get(id, function (tab) {
+							chrome.tabs.create({
+								index: tab.index + 1
+							})
 						});
 						break;
 					default: break;
