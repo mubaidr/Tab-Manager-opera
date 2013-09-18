@@ -160,11 +160,14 @@ function actionEvents() {
 		activeMove = false;
 		var id = event.target.id;
 		switch (id) {
-			case 'btn_split':
+			case 'btn_Split':
 				splitSelected(false); //Done
 				break;
 			case 'btn_Move': //Done
 				moveto();
+				break;
+			case 'btn_Merge': //Done
+				merge();
 				break;
 			case 'btn_Pin': //Done
 				togglePin(0);
@@ -361,7 +364,7 @@ function setupContextMenu() {
 				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			unpin_win: {
-				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+				name: "UnPin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
 			"sep5": "---------",
 			reopen: {

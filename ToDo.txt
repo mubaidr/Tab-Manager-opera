@@ -1,7 +1,6 @@
 /*
 TO DO
 ---Current version---
-* Merge windows
 * Add keyboard short-cuts.
 * Performance improvements.
 

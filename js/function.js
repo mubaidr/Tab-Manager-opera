@@ -394,8 +394,28 @@ function makePrivate(id) {
 			chrome.tabs.remove(new_window.tabs[0].id);
 			chrome.windows.remove(old_window.id);
 		});
-
 	});
+}
+
+function merge() {
+	var obj = selected;
+	if (obj.list.length > 1 && obj.type === 'Window') {
+		chrome.windows.get(obj.list[0], function (first_window) {
+			var id = first_window.id;
+			for (var i = 1; i < obj.list.length; i++) {
+				chrome.tabs.query({ windowId: obj.list[i] }, function (tabs) {
+					for (var j = 0; j < tabs.length; j++) {
+						chrome.tabs.move(tabs[j].id, {
+							windowId: id,
+							index: -1
+						})
+					}
+				})
+			}
+		});
+	} else {
+		alert("You must select two or more windows to merge.");
+	}
 }
 
 /*Context Menu functions*/
