@@ -3,7 +3,7 @@ window.onload = function () {
 	loadData();
 	actionEvents();
 	tooltipEvents();
-	setupContextMenu();	
+	setupContextMenu();
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -359,6 +359,9 @@ function setupContextMenu() {
 			"sep4": "---------",
 			pin_win: {
 				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			unpin_win: {
+				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})
@@ -391,6 +394,7 @@ function setupContextMenu() {
 			reload_tab: {
 				name: "Reload", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},
+			"sep4": "---------",
 			close_tabLeft: {
 				name: "Close tabs above", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			},

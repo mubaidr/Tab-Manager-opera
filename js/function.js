@@ -535,9 +535,18 @@ function handler(func, obj) {
 				}
 				break;
 			case 'unpin':
-				chrome.tabs.update(id, {
-					pinned: false
-				});
+				if (type_func !== 'win') {
+					chrome.tabs.update(id, { pinned: false })
+				} else {
+					chrome.windows.get(id, { populate: true }, function (win) {
+						var tabs = win.tabs;
+						for (var i = 0; i < tabs.length; i++) {
+							chrome.tabs.update(tabs[i].id, {
+								pinned: false
+							});
+						}
+					});
+				}
 				break;
 			case 'private':
 				makePrivate(id);
