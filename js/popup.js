@@ -362,6 +362,10 @@ function setupContextMenu() {
 			},
 			unpin_win: {
 				name: "Pin all tabs", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
+			},
+			"sep5": "---------",
+			reopen: {
+				name: "Reopen last closed tab", callback: function (key, opt) { handler(key, opt.$trigger.attr("id")) }
 			}
 		}
 	})

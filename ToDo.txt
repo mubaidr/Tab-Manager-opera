@@ -1,9 +1,6 @@
 /*
 TO DO
 ---Current version---
-* Close items to botom or up tab context menu
-* Reopen last closed tab context menu (ADd to window context menu)
-* Create tab before or after context menu
 * Merge windows
 * Add keyboard short-cuts.
 * Performance improvements.
