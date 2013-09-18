@@ -168,8 +168,8 @@ function PrivateSelected(call) {
 }
 
 function togglePin(call) {
-	if (call !== 0) {
-		var bool = true;
+	var bool = true;
+	if (call !== 0 && call!==-1) {		
 		if (call === 2) {
 			bool = false
 		};
@@ -188,6 +188,7 @@ function togglePin(call) {
 			}
 		});
 	} else {
+		if (call === -1) bool = false;
 		var obj = selected;
 		if (obj.list.length > 0) {
 			if (obj.type === 'Tab') {
@@ -195,7 +196,7 @@ function togglePin(call) {
 					chrome.tabs.get(obj.list[j], function (tab) {
 						if (!tab.pinned) {
 							chrome.tabs.update(tab.id, {
-								pinned: true
+								pinned: bool
 							});
 						}
 					});
@@ -205,7 +206,7 @@ function togglePin(call) {
 					chrome.tabs.query({ windowId: obj.list[j] }, function (tab) {
 						if (!tab.pinned) {
 							chrome.tabs.update(tab.id, {
-								pinned: true
+								pinned: bool
 							});
 						}
 					});
@@ -419,7 +420,7 @@ function handler(func, obj) {
 				togglePin(0);
 				break;
 			case 'unpin':
-
+				togglePin(-1);
 				break;
 			case 'private':
 				PrivateSelected(0);
