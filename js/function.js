@@ -169,7 +169,7 @@ function PrivateSelected(call) {
 
 function togglePin(call) {
 	var bool = true;
-	if (call !== 0 && call!==-1) {		
+	if (call !== 0 && call !== -1) {
 		if (call === 2) {
 			bool = false
 		};
@@ -449,11 +449,29 @@ function handler(func, obj) {
 						break;
 					case 'tabLeft':
 						chrome.tabs.get(id, function (tab) {
-							
+							chrome.tabs.query({
+								windowId: tab.windowId
+							}, function (tabs) {
+								for (var i = 0; i < tabs.length; i++) {
+									if (tabs[i].index < tab.index) {
+										chrome.tabs.remove(tabs[i].id);
+									}
+								}
+							});
 						});
 						break;
 					case 'tabRight':
-						
+						chrome.tabs.get(id, function (tab) {
+							chrome.tabs.query({
+								windowId: tab.windowId
+							}, function (tabs) {
+								for (var i = 0; i < tabs.length; i++) {
+									if (tabs[i].index > tab.index) {
+										chrome.tabs.remove(tabs[i].id);
+									}
+								}
+							});
+						});
 						break;
 					default: break;
 				}
