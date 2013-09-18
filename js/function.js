@@ -404,7 +404,7 @@ function handler(func, obj) {
 	var type_func = func.split('_')[1];
 	getSelected();
 	var count = selected.list.length;
-	if (!count) {//IF there are selected items
+	if (count > 0) {//If there are selected items
 		switch (main_func) {
 			case 'close':
 				closeSelected();
@@ -419,7 +419,7 @@ function handler(func, obj) {
 				togglePin(0);
 				break;
 			case 'unpin':
-				
+
 				break;
 			case 'private':
 				PrivateSelected(0);
@@ -539,7 +539,7 @@ function handler(func, obj) {
 	}
 }
 
-function recentHandler(func, url) {	
+function recentHandler(func, url) {
 	switch (func) {
 		case 'open_recent':
 			chrome.tabs.create({
