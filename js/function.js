@@ -188,13 +188,13 @@ function togglePin(call) {
 			}
 		});
 	} else {
-		if (call === -1) bool = false;
+		if (call === -1) { bool = false; }
 		var obj = selected;
 		if (obj.list.length > 0) {
 			if (obj.type === 'Tab') {
 				for (var j = 0; j < obj.list.length; j++) {
 					chrome.tabs.get(obj.list[j], function (tab) {
-						if (!tab.pinned) {
+						if (tab.pinned!==bool) {
 							chrome.tabs.update(tab.id, {
 								pinned: bool
 							});
@@ -203,11 +203,13 @@ function togglePin(call) {
 				}
 			} else {
 				for (var j = 0; j < obj.list.length; j++) {
-					chrome.tabs.query({ windowId: obj.list[j] }, function (tab) {
-						if (!tab.pinned) {
-							chrome.tabs.update(tab.id, {
-								pinned: bool
-							});
+					chrome.tabs.query({ windowId: obj.list[j] }, function (tabs) {
+						for (var k = 0; k < tabs.length; k++) {
+							if (tabs[k].pinned !== bool) {
+								chrome.tabs.update(tabs[k].id, {
+									pinned: bool
+								});
+							}
 						}
 					});
 				}
