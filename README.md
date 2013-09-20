@@ -18,6 +18,8 @@ A add-on for Opera 15+, to easily manage Tabs/Windows.
 	<li>Remove duplicates</li>
 	<li>Recent tabs list</li>
 	<li>Context menu for all items and actions</li>
+	<li>Create tab to the left or to the right of selcted tab</li>
+	<li>Close tabs to the left or to the right of selcted tab</li>
 	<li>and much more to come</li>
 </ul>
 
