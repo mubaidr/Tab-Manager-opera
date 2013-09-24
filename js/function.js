@@ -1,5 +1,4 @@
-﻿'use strict';
-var prev_type = 'undefined', selected = {
+﻿var prev_type = 'undefined', selected = {
 	'type': 'undefined',
 	'list': []
 }, activeMove = false;
@@ -81,14 +80,14 @@ function closeSelected(all) {
 				windowId: win.id,
 				selected: false
 			}, function (tab) {
-				newTab = tab.id
+				newTab = tab.id;
 			});
 			for (var i = 0; i < win.tabs.length; i++) {
 				var tab_id = win.tabs[i].id;
 				if (tab_id !== newTab) {
 					chrome.tabs.remove(tab_id);
 				}
-			};
+			}
 		});
 		chrome.windows.getAll(function (wins) {
 			for (var i = 0; i < wins.length; i++) {
@@ -126,7 +125,7 @@ function PrivateSelected(call) {
 		case 2:
 			var bool = true;
 			if (call === 2) {
-				bool = false
+				bool = false;
 			}
 			chrome.windows.getAll({
 				populate: true
@@ -161,7 +160,7 @@ function PrivateSelected(call) {
 						});
 					}
 				}
-			})
+			});
 			break;
 		default: break;
 	}
@@ -171,8 +170,8 @@ function togglePin(call) {
 	var bool = true;
 	if (call !== 0 && call !== -1) {
 		if (call === 2) {
-			bool = false
-		};
+			bool = false;
+		}
 		chrome.windows.getAll({
 			populate: true
 		}, function (wins) {
@@ -250,7 +249,7 @@ function splitSelected(parent, id) {
 								chrome.tabs.remove(win.tabs[0].id);
 							});
 						}
-					})
+					});
 				});
 			}
 		} else {
@@ -266,20 +265,20 @@ function splitSelected(parent, id) {
 								chrome.tabs.create({
 									windowId: new_win.id,
 									url: old_tab.url
-								})
+								});
 								chrome.tabs.remove(tab);
-							})
+							});
 						} else {
 							chrome.tabs.move(tab, {
 								windowId: id,
 								index: -1
 							}, function () {
 								loadData();
-							})
+							});
 						}
-					})
+					});
 				}
-			})
+			});
 		}
 	}
 }
@@ -371,7 +370,7 @@ function removeDuplicateLocal(id) {
 				}
 			}
 		}
-	})
+	});
 }
 
 function cloneWin(id) {
@@ -389,7 +388,7 @@ function cloneWin(id) {
 				});
 			}
 			chrome.tabs.remove(new_win.tabs[0].id);
-		})
+		});
 	});
 }
 
@@ -429,9 +428,9 @@ function merge() {
 						chrome.tabs.move(tabs[j].id, {
 							windowId: id,
 							index: -1
-						})
+						});
 					}
-				})
+				});
 			}
 		});
 	} else {
@@ -534,14 +533,14 @@ function handler(func, obj) {
 						chrome.tabs.get(id, function (tab) {
 							chrome.tabs.create({
 								index: tab.index
-							})
+							});
 						});
 						break;
 					case 'tabRight':
 						chrome.tabs.get(id, function (tab) {
 							chrome.tabs.create({
 								index: tab.index + 1
-							})
+							});
 						});
 						break;
 					default: break;
@@ -563,7 +562,7 @@ function handler(func, obj) {
 				break;
 			case 'pin':
 				if (type_func !== 'win') {
-					chrome.tabs.update(id, { pinned: true })
+					chrome.tabs.update(id, { pinned: true });
 				} else {
 					chrome.windows.get(id, { populate: true }, function (win) {
 						var tabs = win.tabs;
@@ -577,7 +576,7 @@ function handler(func, obj) {
 				break;
 			case 'unpin':
 				if (type_func !== 'win') {
-					chrome.tabs.update(id, { pinned: false })
+					chrome.tabs.update(id, { pinned: false });
 				} else {
 					chrome.windows.get(id, { populate: true }, function (win) {
 						var tabs = win.tabs;
@@ -625,7 +624,7 @@ function handler(func, obj) {
 								chrome.tabs.remove(win.tabs[0].id);
 							});
 						}
-					})
+					});
 				});
 				break;
 			case 'reopen':
@@ -635,8 +634,8 @@ function handler(func, obj) {
 				}, function (item) {
 					chrome.tabs.create({
 						url: item[0].url
-					})
-				})
+					});
+				});
 				break;
 			default:
 				break;

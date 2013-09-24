@@ -1,27 +1,27 @@
 chrome.tabs.onRemoved.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.tabs.onMoved.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.tabs.onUpdated.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.tabs.onCreated.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.windows.onCreated.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.windows.onRemoved.addListener(function () {
-	sendMessage()
+	sendMessage();
 });
 chrome.runtime.onInstalled.addListener(function () {
 	setText();
 	chrome.browserAction.setBadgeBackgroundColor({
 		color: [0, 114, 198, 255]
 	});
-})
+});
 function sendMessage() {
 	var views = chrome.extension.getViews({
 		type: 'popup'

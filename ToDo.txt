@@ -1,7 +1,6 @@
 /*
 TO DO
 ---Current version---
-* Fix issue for selected windows
 * Add keyboard short-cuts.
 * Performance improvements.
 

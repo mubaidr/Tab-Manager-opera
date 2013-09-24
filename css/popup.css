@@ -330,39 +330,7 @@ h3 {
 	h3.duplicate {
 		background: url(../img/duplicate.png) left center no-repeat;
 	}
-/*
-#btn_split {
-	background: white url(../img/split.png) 5px center no-repeat;
-}
 
-#btn_AutoSplit {
-	background: white url(../img/split-auto.png) 5px center no-repeat;
-}
-
-#btn_Move {
-	background: white url(../img/move.png) 5px center no-repeat;
-}
-
-#btn_Pin {
-	background: white url(../img/pin.png) 5px center no-repeat;
-}
-
-#btn_Private {
-	background: white url(../img/private.png) 5px center no-repeat;
-}
-
-#btn_close {
-	background: white url(../img/close.png) 5px center no-repeat;
-}
-
-#btn_newTab {
-	background: white url(../img/new.png) 5px center no-repeat;
-}
-
-#btn_newWindow {
-	background: white url(../img/window.png) 5px center no-repeat;
-}
-	*/
 /*Scroll bar*/
 ::-webkit-scrollbar {
 	width: 5px!important;
