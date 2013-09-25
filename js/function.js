@@ -47,7 +47,7 @@ function createNew(type, p) {
 		if (obj.type === 'Window') {
 			for (var i = 0; i < obj.list.length; i++) {
 				chrome.tabs.create({
-					windowId: obj.list[i],
+					windowId: obj.list[i],					
 					selected: false
 				});
 			}
@@ -532,14 +532,18 @@ function handler(func, obj) {
 					case 'tabLeft':
 						chrome.tabs.get(id, function (tab) {
 							chrome.tabs.create({
-								index: tab.index
+								windowId: tab.windowId,
+								index: tab.index,
+								selected: false
 							});
 						});
 						break;
 					case 'tabRight':
 						chrome.tabs.get(id, function (tab) {
 							chrome.tabs.create({
-								index: tab.index + 1
+								windowId: tab.windowId,
+								index: tab.index + 1,
+								selected: false
 							});
 						});
 						break;

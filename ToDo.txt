@@ -1,7 +1,9 @@
 ﻿/*
-Close all other tabs
+Pass urls as array to new window object
+Use window create events to convert window to fullscreen
 
 ---NEXT VERSION---
+Close all other tabs
 Expand/collapse list
 Add to speed-dial
 Add to stash
