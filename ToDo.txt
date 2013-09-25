@@ -1,8 +1,5 @@
-/*
-TO DO
----Current version---
-* Add keyboard short-cuts.
-* Performance improvements.
+﻿/*
+Close all other tabs
 
 ---NEXT VERSION---
 Expand/collapse list

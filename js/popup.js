@@ -1,8 +1,8 @@
 window.onload = function () {
 	loadData();
 	actionEvents();
-	tooltipEvents();
 	setupContextMenu();
+	tooltipEvents();
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -35,7 +35,7 @@ function addToList(object, type, parent_id) {
 	var h4 = document.createElement('h4');
 	h4.id = object.id;
 	h4.type = type;
-	$(li).append(h4);
+	$(li).append(h4);	
 	attachEvents(h4);
 	switch (type) {
 		case 'Window':
@@ -43,6 +43,7 @@ function addToList(object, type, parent_id) {
 			$(h4).addClass('window');
 			$(h4).html(type);
 			var ul = document.createElement('ul');
+			ul.className = 'window';
 			$(li).append(ul);
 			$('#tab_container').append(li);
 			break;
