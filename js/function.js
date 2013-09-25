@@ -47,7 +47,7 @@ function createNew(type, p) {
 		if (obj.type === 'Window') {
 			for (var i = 0; i < obj.list.length; i++) {
 				chrome.tabs.create({
-					windowId: obj.list[i],					
+					windowId: obj.list[i],
 					selected: false
 				});
 			}
@@ -113,11 +113,19 @@ function closeSelected(all) {
 
 function PrivateSelected(call) {
 	switch (call) {
+		case -1:
+			var obj = selected;
+			if (obj.list.length > 0 && obj.type === 'Window') {
+				for (var i = 0; i < obj.list.length; i++) {
+					makePrivate(obj.list[i], false);
+				}
+			}
+			break;
 		case 0:
 			var obj = selected;
 			if (obj.list.length > 0 && obj.type === 'Window') {
 				for (var i = 0; i < obj.list.length; i++) {
-					makePrivate(obj.list[i]);
+					makePrivate(obj.list[i], true);
 				}
 			}
 			break;
@@ -133,18 +141,11 @@ function PrivateSelected(call) {
 			function (wins) {
 				var temp = [], win;
 				for (var i = 0; i < wins.length; i++) {
-					win=wins[i];
+					win = wins[i];
 					if (bool !== win.incognito) {
 						var tabs = [];
 						for (var j = 0; j < win.tabs.length; j++) {
-							tabs.push(win.tabs[j].url);
-							//var old_tab = tabs.pop();
-							//chrome.tabs.create({
-							//	windowId: new_win.id,
-							//	url: old_tab.url,
-							//	pinned: old_tab.pinned,
-							//	selected: old_tab.selected
-							//});
+							tabs.push(win.tabs[j].url);							
 						}
 						chrome.windows.create({
 							url: tabs,
@@ -154,7 +155,7 @@ function PrivateSelected(call) {
 							top: win.top,
 							width: win.width,
 							height: win.height
-						}, function (new_win) {							
+						}, function (new_win) {
 							chrome.windows.remove(win.id);
 						});
 					}
@@ -232,7 +233,7 @@ function splitSelected(parent, id) {
 							chrome.windows.create({
 								url: tab.url,
 								incognito: true
-							}, function () {								
+							}, function () {
 								chrome.tabs.remove(id);
 							});
 						} else {
@@ -370,7 +371,7 @@ function removeDuplicateLocal(id) {
 
 function cloneWin(id) {
 	chrome.windows.get(id, { populate: true }, function (win) {
-		var tabs = win.tabs, urls=[];
+		var tabs = win.tabs, urls = [];
 		for (var j = 0; j < tabs.length; j++) {
 			urls.push(tabs[j].url);
 		}
@@ -382,14 +383,10 @@ function cloneWin(id) {
 	});
 }
 
-function makePrivate(id) {
+function makePrivate(id, incognito) {
 	chrome.windows.get(id, {
 		populate: true
-	}, function (old_window) {
-		var incognito = true;
-		if (old_window.incognito) {
-			incognito = false;
-		}
+	}, function (old_window) {		
 		urls = [];
 		for (var j = 0; j < old_window.tabs.length; j++) {
 			urls.push(old_window.tabs[j].url);
@@ -397,7 +394,7 @@ function makePrivate(id) {
 		chrome.windows.create({
 			url: urls,
 			incognito: incognito
-		}, function () {			
+		}, function () {
 			chrome.windows.remove(old_window.id);
 		});
 	});
@@ -450,6 +447,9 @@ function handler(func, obj) {
 				break;
 			case 'private':
 				PrivateSelected(0);
+				break;
+			case 'normal':
+				PrivateSelected(-1);
 				break;
 			case 'clone':
 				clone();
@@ -579,7 +579,10 @@ function handler(func, obj) {
 				}
 				break;
 			case 'private':
-				makePrivate(id);
+				makePrivate(id, true);
+				break;
+			case 'normal':
+				makePrivate(id, false);
 				break;
 			case 'clone':
 				if (type_func === 'tab') {
@@ -598,7 +601,7 @@ function handler(func, obj) {
 							chrome.windows.create({
 								url: tab.url,
 								incognito: true
-							}, function () {								
+							}, function () {
 								chrome.tabs.remove(id);
 							});
 						} else {

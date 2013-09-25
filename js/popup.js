@@ -186,6 +186,9 @@ function actionEvents() {
 			case 'btn_Private':
 				PrivateSelected(0);
 				break;
+			case 'btn_Normal':
+				PrivateSelected(-1);
+				break;
 			case 'btn_Private_all':
 				if (confirm('Are you sure you want to make all Windows Private?')) {
 					PrivateSelected(1);
@@ -371,6 +374,12 @@ function setupContextMenu() {
 			"sep2": "---------",
 			private_win: {
 				name: "Private",
+				callback: function (key, opt) {
+					handler(key, opt.$trigger.attr("id"));
+				}
+			},
+			normal_win: {
+				name: "Normal",
 				callback: function (key, opt) {
 					handler(key, opt.$trigger.attr("id"));
 				}
