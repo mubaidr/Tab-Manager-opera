@@ -145,7 +145,7 @@ function PrivateSelected(call) {
 					if (bool !== win.incognito) {
 						var tabs = [];
 						for (var j = 0; j < win.tabs.length; j++) {
-							tabs.push(win.tabs[j].url);							
+							tabs.push(win.tabs[j].url);
 						}
 						chrome.windows.create({
 							url: tabs,
@@ -386,7 +386,7 @@ function cloneWin(id) {
 function makePrivate(id, incognito) {
 	chrome.windows.get(id, {
 		populate: true
-	}, function (old_window) {		
+	}, function (old_window) {
 		urls = [];
 		for (var j = 0; j < old_window.tabs.length; j++) {
 			urls.push(old_window.tabs[j].url);
@@ -429,12 +429,45 @@ function handler(func, obj) {
 	getSelected();
 	var count = selected.list.length;
 	if (count > 0) {//If there are selected items
+		var tabs = [], list = selected.list;
+		for (var i = 0; i < list.length; i++) {
+			tabs.push(list[i]);
+		}
 		switch (main_func) {
 			case 'close':
 				closeSelected();
 				break;
 			case 'create':
-				createNew('Tab');
+				switch (type_func) {
+					case 'tab':
+						for (var i = 0; i < tabs.length; i++) {
+							chrome.tabs.create({ windowId: tabs[i], selected: false });
+						}
+						break;
+					case 'tabLeft':
+						for (var i = 0; i < tabs.length; i++) {
+							chrome.tabs.get(tabs[i], function (tab) {
+								chrome.tabs.create({
+									windowId: tab.windowId,
+									index: tab.index,
+									selected: false
+								});
+							});
+						}
+						break;
+					case 'tabRight':
+						for (var i = 0; i < tabs.length; i++) {
+							chrome.tabs.get(tabs[i], function (tab) {
+								chrome.tabs.create({
+									windowId: tab.windowId,
+									index: tab.index + 1,
+									selected: false
+								});
+							});
+						}
+						break;
+					default: break;
+				}
 				break;
 			case 'reload':
 				reload();
