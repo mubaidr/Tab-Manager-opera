@@ -493,6 +493,16 @@ function handler(func, obj) {
 			case 'split':
 				splitSelected(false);
 				break;
+			case 'reopen':
+				chrome.history.search({
+					text: '',
+					maxResults: 1
+				}, function (item) {
+					chrome.tabs.create({
+						url: item[0].url
+					});
+				});
+				break;
 			default:
 				break;
 		}
