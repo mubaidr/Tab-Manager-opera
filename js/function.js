@@ -379,6 +379,10 @@ function cloneWin(id) {
 			url: urls,
 			focused: win.focused,
 			incognito: win.incognito
+		}, function (new_win) {
+			chrome.windows.update(new_win.id, {
+				state: win.state
+			});
 		});
 	});
 }
@@ -394,7 +398,10 @@ function makePrivate(id, incognito) {
 		chrome.windows.create({
 			url: urls,
 			incognito: incognito
-		}, function () {
+		}, function (new_win) {
+			chrome.windows.update(new_win.id, {
+				state: old_window.state
+			});
 			chrome.windows.remove(old_window.id);
 		});
 	});
@@ -551,11 +558,19 @@ function handler(func, obj) {
 						chrome.tabs.create({ windowId: id, selected: false });
 						break;
 					case 'window':
-						chrome.windows.create();
+						chrome.windows.create(function (win) {
+							chrome.windows.update(win.id, {
+								state: 'maximized'
+							});
+						});
 						break;
 					case 'winPrivate':
 						chrome.windows.create({
 							incognito: true
+						}, function (win) {
+							chrome.windows.update(win.id, {
+								state: 'maximized'
+							});
 						});
 						break;
 					case 'tabLeft':

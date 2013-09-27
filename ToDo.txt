@@ -1,6 +1,4 @@
 ﻿/*
-Add seprate normal button
-Pass urls as array to new window object
 Use window create events to convert window to fullscreen
 
 ---NEXT VERSION---
