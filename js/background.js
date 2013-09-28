@@ -16,11 +16,14 @@ chrome.windows.onCreated.addListener(function () {
 chrome.windows.onRemoved.addListener(function () {
 	sendMessage();
 });
-chrome.runtime.onInstalled.addListener(function () {
-	setText();
+chrome.runtime.onInstalled.addListener(function () {	
 	chrome.browserAction.setBadgeBackgroundColor({
 		color: [0, 114, 198, 255]
 	});
+	chrome.tabs.create({
+		url: '../html/help.html'
+	});
+	setText();
 });
 function sendMessage() {
 	var views = chrome.extension.getViews({
