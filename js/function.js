@@ -63,6 +63,10 @@ function createNew(type, p) {
 		chrome.windows.create({
 			focused: false,
 			incognito: p
+		}, function (win) {
+			chrome.windows.update(win.id, {
+				state: 'maximized'
+			});
 		});
 	}
 }
@@ -226,25 +230,15 @@ function splitSelected(parent, id) {
 	if (tab_ids.length > 0 && obj.type === 'Tab') {
 		if (!parent) {
 			for (var j = 0; j < tab_ids.length; j++) {
-				var id = tab_ids[j];
-				chrome.tabs.get(id, function (tab) {
+				var t_id = tab_ids[j];
+				chrome.tabs.get(t_id, function (tab) {
 					chrome.windows.get(tab.windowId, function (win) {
-						if (win.incognito) {
-							chrome.windows.create({
-								url: tab.url,
-								incognito: true
-							}, function () {
-								chrome.tabs.remove(id);
-							});
-						} else {
-							chrome.windows.create(function (win) {
-								chrome.tabs.move(id, {
-									windowId: win.id,
-									index: -1
-								});
-								chrome.tabs.remove(win.tabs[0].id);
-							});
-						}
+						chrome.windows.create({
+							url: tab.url,
+							incognito: win.incognito
+						}, function () {
+							chrome.tabs.remove(id);
+						});
 					});
 				});
 			}
@@ -520,7 +514,7 @@ function handler(func, obj) {
 					case 'tab':
 						chrome.tabs.remove(id);
 						break;
-					case 'window':
+					case 'win':
 						chrome.windows.remove(id);
 						break;
 					case 'tabLeft':
