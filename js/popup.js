@@ -1,4 +1,4 @@
-window.onload = function () {
+document.onready = function () {
 	loadData();
 	actionEvents();
 	setupContextMenu();
@@ -35,27 +35,30 @@ function addToList(object, type, parent_id) {
 	var h4 = document.createElement('h4');
 	h4.id = object.id;
 	h4.type = type;
-	$(li).append(h4);	
+	$(li).append(h4);
 	attachEvents(h4);
 	switch (type) {
-		case 'Window':
-			li.id = object.id + '_liw';
-			$(h4).addClass('window');
-			$(h4).html(type);
-			var ul = document.createElement('ul');
-			ul.className = 'window';
-			$(li).append(ul);
-			$('#tab_container').append(li);
-			break;
-		case 'Tab':
-			li.id = object.id + '_lit';
-			$(h4).addClass('tab');
-			h4.title = object.url;
-			$(h4).html(object.title);
-			$('#' + parent_id + '_liw ul').append(li);
-			break;
-		default:
-			break;
+	case 'Window':
+		li.id = object.id + '_liw';
+		$(h4).addClass('window');
+		$(h4).html(type);
+		var ul = document.createElement('ul');
+		ul.className = 'window';
+		$(li).append(ul);
+		$('#tab_container').append(li);
+		break;
+	case 'Tab':
+		li.id = object.id + '_lit';
+		$(h4).addClass('tab');
+		h4.title = object.url;
+		$(h4).html(object.title);
+		$('#' + parent_id + '_liw ul').append(li);
+		break;
+	case 'URL':
+		ta_url_list.value += object.url + "\n";
+		break;
+	default:
+		break;
 	}
 	showStatus(object, type, parent_id);
 }
@@ -162,136 +165,153 @@ function actionEvents() {
 		activeMove = false;
 		var id = event.target.id;
 		switch (id) {
-			case 'btn_Split':
-				splitSelected(false);
-				break;
-			case 'btn_Move':
-				moveto();
-				break;
-			case 'btn_Merge':
-				merge();
-				break;
-			case 'btn_Pin':
-				togglePin(0);
-				break;
-			case 'btn_UnPin':
-				togglePin(-1);
-				break;
-			case 'btn_Pin_all':
-				togglePin(1);
-				break;
-			case 'btn_UnPin_all':
-				togglePin(2);
-				break;
-			case 'btn_Private':
-				PrivateSelected(0);
-				break;
-			case 'btn_Normal':
-				PrivateSelected(-1);
-				break;
-			case 'btn_Private_all':
-				if (confirm('Are you sure you want to make all Windows Private?')) {
-					PrivateSelected(1);
-				}
-				break;
-			case 'btn_Normal_all':
-				if (confirm('Are you sure you want to make all Windows Normal?')) {
-					PrivateSelected(2);
-				}
-				break;
-			case 'btn_close':
-				closeSelected();
-				break;
-			case 'btn_close_all':
-				if (confirm('Are you sure you want to close all tabs?')) {
-					closeSelected(true);
-				}
-				break;
-			case 'btn_reload':
-				reload();
-				break;
-			case 'btn_reload_all':
-				if (confirm('Are you sure you want to reload all tabs?')) {
-					reload(true);
-				}
-				break;
-			case 'btn_newTab':
-				createNew('Tab');
-				break;
-			case 'btn_newWindow':
-				createNew('Window', false);
-				break;
-			case 'btn_newPrivateWindow':
-				createNew('Window', true);
-				break;
-			case 'btn_clone':
-				clone();
-				break;
-			case 'btn_duplicate':
-				removeDuplicate();
-				break;
-			default:
-				break;
+		case 'btn_Split':
+			splitSelected(false);
+			break;
+		case 'btn_Move':
+			moveto();
+			break;
+		case 'btn_Merge':
+			merge();
+			break;
+		case 'btn_Pin':
+			togglePin(0);
+			break;
+		case 'btn_UnPin':
+			togglePin(-1);
+			break;
+		case 'btn_Pin_all':
+			togglePin(1);
+			break;
+		case 'btn_UnPin_all':
+			togglePin(2);
+			break;
+		case 'btn_Private':
+			PrivateSelected(0);
+			break;
+		case 'btn_Normal':
+			PrivateSelected(-1);
+			break;
+		case 'btn_Private_all':
+			if (confirm('Are you sure you want to make all Windows Private?')) {
+				PrivateSelected(1);
+			}
+			break;
+		case 'btn_Normal_all':
+			if (confirm('Are you sure you want to make all Windows Normal?')) {
+				PrivateSelected(2);
+			}
+			break;
+		case 'btn_close':
+			closeSelected();
+			break;
+		case 'btn_close_all':
+			if (confirm('Are you sure you want to close all tabs?')) {
+				closeSelected(true);
+			}
+			break;
+		case 'btn_reload':
+			reload();
+			break;
+		case 'btn_reload_all':
+			if (confirm('Are you sure you want to reload all tabs?')) {
+				reload(true);
+			}
+			break;
+		case 'btn_newTab':
+			createNew('Tab');
+			break;
+		case 'btn_newWindow':
+			createNew('Window', false);
+			break;
+		case 'btn_newPrivateWindow':
+			createNew('Window', true);
+			break;
+		case 'btn_clone':
+			clone();
+			break;
+		case 'btn_duplicate':
+			removeDuplicate();
+			break;
+		default:
+			break;
 		}
 	});
 	$('.subheading button').on('click', function (e) {
 		switch (e.target.id) {
-			case 'btn_all':
-				showCurrentTabs(true);
-				break;
-			case 'btn_recent':
-				showCurrentTabs(false);
-				break;
-			case 'btn_bookmarks':
-				showCurrentTabs('b');
-				break;
-			case 'btn_selected':
-				break;
-			case 'btn_allActions':
-				break;
-			default:
-				break;
+		case 'btn_all':
+			showCurrentTabs(true);
+			break;
+		case 'btn_recent':
+			showCurrentTabs(false);
+			break;
+		case 'btn_bookmarks':
+			showCurrentTabs('b');
+			break;
+		case 'btn_selected':
+			break;
+		case 'btn_allActions':
+			break;
+		case 'btn_url_list':
+			showCurrentTabs('u');
+			break;
+		default:
+			break;
 		}
 	});
 }
 
 function showCurrentTabs(check) {
 	switch (check) {
-		case true:
-			$('.column.right').show();
-			$('#scroll_container').parent().css({
-				width: '70%'
-			});
-			$('#tab_container').show();
-			$('#tab_container_recent').hide();
-			$('#tab_container_bookmarks').hide();
-			$('#info').html("Welcome to Easy Tab Manager!");
-			break;
-		case false:
-			$('.column.right').hide();
-			$('#scroll_container').parent().css({
-				width: '100%'
-			});
-			$('#tab_container').hide();
-			$('#tab_container_recent').show();
-			$('#tab_container_bookmarks').hide();
-			$('#info').html("Double click to restore a tab.");
-			loadRecentClosed();
-			break;
-		case 'b':
-			$('.column.right').hide();
-			$('#scroll_container').parent().css({
-				width: '100%'
-			});
-			$('#tab_container').hide();
-			$('#tab_container_recent').hide();
-			$('#tab_container_bookmarks').show();
-			$('#info').html("Double click to open a bookmark in background tab.");
-			loadBookmarks();
-			break;
-		default:
-			break;
+	case true:
+		$('.column.right').show();
+		$('#scroll_container').parent().css({
+			width: '70%'
+		});
+		$('#tab_container').show();
+		$('#tab_container_recent').hide();
+		$('#url_list_container').hide();
+		$('#info').html("Welcome to Easy Tab Manager!");
+		break;
+	case false:
+		$('.column.right').hide();
+		$('#scroll_container').parent().css({
+			width: '100%'
+		});
+		$('#tab_container').hide();
+		$('#tab_container_recent').show();
+		$('#url_list_container').hide();
+		$('#info').html('Double click to restore a tab.');
+		loadRecentClosed();
+		break;
+	case 'u':
+		$('.column.right').hide();
+		$('#scroll_container').parent().css({
+			width: '100%'
+		});
+		$('#tab_container').hide();
+		$('#url_list_container').show();
+		$('#tab_container_recent').hide();
+		$('#info').html('Copy urls to clipboard.');
+		loadURLList();
+		break;
+	default:
+		break;
 	}
+}
+
+function loadURLList() {
+	ta_url_list.value = "";
+	chrome.windows.getAll({
+		populate: true
+	}, function (wins) {
+		for (var i = 0; i < wins.length; i++) {
+			var win = wins[i];
+			for (var j = 0; j < win.tabs.length; j++) {
+				addToList(win.tabs[j], 'URL');
+			}
+		}
+	});
 }
 
 function loadRecentClosed() {
@@ -305,7 +325,7 @@ function loadRecentClosed() {
 	});
 }
 
-function loadBookmarks() { }
+function loadBookmarks() {}
 
 function tooltipEvents() {
 	$('#action_container button').on('mouseover', function () {

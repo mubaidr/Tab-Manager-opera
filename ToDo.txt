@@ -1,13 +1,11 @@
-﻿/*
+/*
 Use window create events to convert window to fullscreen
 
 ---NEXT VERSION---
-Close all other tabs
-Expand/collapse list
+URL List or Copy url to clipboard context menu
 Add to speed-dial
 Add to stash
 Add to bookmarks
-Options Page.
-Tab search filter.
-tab thumbnails on hover.
+Tab search filter
+tab thumbnails on hover
 */

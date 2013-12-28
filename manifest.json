@@ -6,9 +6,9 @@
 	},
 	"developer" : {
 		"name" : "mubaidr",
-		"url" : "http://my.opera.com/mubaidr/blog/"
+		"url" : "https://github.com/mubaidr"
 	},
-	"homepage_url" : "http://my.opera.com/mubaidr/blog/2013/08/28/easy-tab-manager",
+	"homepage_url" : "https://github.com/mubaidr/Tab-Manager-opera",
 	"browser_action" : {
 		"default_title" : "Easy Tab Manager",
 		"default_popup" : "html/popup.html",
@@ -18,7 +18,7 @@
 		"scripts" : ["js/background.js"],
 		"persistent" : false
 	},
-	"version" : "1.0.5",
+	"version" : "1.1",
 	"manifest_version" : 2,
 	"commands" : {
 		"_execute_browser_action" : {

@@ -20,9 +20,11 @@ chrome.runtime.onInstalled.addListener(function () {
 	chrome.browserAction.setBadgeBackgroundColor({
 		color: [0, 114, 198, 255]
 	});
+	/*
 	chrome.tabs.create({
 		url: '../html/help.html'
 	});
+	*/
 	setText();
 });
 function sendMessage() {

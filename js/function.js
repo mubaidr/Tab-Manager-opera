@@ -1,7 +1,8 @@
-﻿var prev_type = 'undefined', selected = {
-	'type': 'undefined',
-	'list': []
-}, activeMove = false;
+var prev_type = 'undefined',
+	selected = {
+		'type': 'undefined',
+		'list': []
+	}, activeMove = false;
 
 function focusTab(id, type) {
 	if (type === 'Tab') {
@@ -75,7 +76,7 @@ function closeSelected(all) {
 	var obj;
 	if (all === true) {
 		var currentWin,
-		newTab;
+			newTab;
 		chrome.windows.getCurrent({
 			populate: true
 		}, function (win) {
@@ -117,33 +118,34 @@ function closeSelected(all) {
 
 function PrivateSelected(call) {
 	switch (call) {
-		case -1:
-			var obj = selected;
-			if (obj.list.length > 0 && obj.type === 'Window') {
-				for (var i = 0; i < obj.list.length; i++) {
-					makePrivate(obj.list[i], false);
-				}
+	case -1:
+		var obj = selected;
+		if (obj.list.length > 0 && obj.type === 'Window') {
+			for (var i = 0; i < obj.list.length; i++) {
+				makePrivate(obj.list[i], false);
 			}
-			break;
-		case 0:
-			var obj = selected;
-			if (obj.list.length > 0 && obj.type === 'Window') {
-				for (var i = 0; i < obj.list.length; i++) {
-					makePrivate(obj.list[i], true);
-				}
+		}
+		break;
+	case 0:
+		var obj = selected;
+		if (obj.list.length > 0 && obj.type === 'Window') {
+			for (var i = 0; i < obj.list.length; i++) {
+				makePrivate(obj.list[i], true);
 			}
-			break;
-		case 1:
-		case 2:
-			var bool = true;
-			if (call === 2) {
-				bool = false;
-			}
-			chrome.windows.getAll({
+		}
+		break;
+	case 1:
+	case 2:
+		var bool = true;
+		if (call === 2) {
+			bool = false;
+		}
+		chrome.windows.getAll({
 				populate: true
 			},
 			function (wins) {
-				var temp = [], win;
+				var temp = [],
+					win;
 				for (var i = 0; i < wins.length; i++) {
 					win = wins[i];
 					if (bool !== win.incognito) {
@@ -165,8 +167,9 @@ function PrivateSelected(call) {
 					}
 				}
 			});
-			break;
-		default: break;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -191,7 +194,9 @@ function togglePin(call) {
 			}
 		});
 	} else {
-		if (call === -1) { bool = false; }
+		if (call === -1) {
+			bool = false;
+		}
 		var obj = selected;
 		if (obj.list.length > 0) {
 			if (obj.type === 'Tab') {
@@ -206,7 +211,9 @@ function togglePin(call) {
 				}
 			} else {
 				for (var j = 0; j < obj.list.length; j++) {
-					chrome.tabs.query({ windowId: obj.list[j] }, function (tabs) {
+					chrome.tabs.query({
+						windowId: obj.list[j]
+					}, function (tabs) {
 						for (var k = 0; k < tabs.length; k++) {
 							if (tabs[k].pinned !== bool) {
 								chrome.tabs.update(tabs[k].id, {
@@ -243,7 +250,8 @@ function splitSelected(parent, id) {
 				});
 			}
 		} else {
-			var old_win_id, temp = [], tab;
+			var old_win_id, temp = [],
+				tab;
 			chrome.windows.get(id, function (new_win) {
 				for (var i = 0; i < tab_ids.length; i++) {
 					old_win_id = parseInt($('#' + tab_ids[i]).parent().parent().parent().attr('id').split('_')[0], 10);
@@ -364,8 +372,11 @@ function removeDuplicateLocal(id) {
 }
 
 function cloneWin(id) {
-	chrome.windows.get(id, { populate: true }, function (win) {
-		var tabs = win.tabs, urls = [];
+	chrome.windows.get(id, {
+		populate: true
+	}, function (win) {
+		var tabs = win.tabs,
+			urls = [];
 		for (var j = 0; j < tabs.length; j++) {
 			urls.push(tabs[j].url);
 		}
@@ -407,7 +418,9 @@ function merge() {
 		chrome.windows.get(obj.list[0], function (first_window) {
 			var id = first_window.id;
 			for (var i = 1; i < obj.list.length; i++) {
-				chrome.tabs.query({ windowId: obj.list[i] }, function (tabs) {
+				chrome.tabs.query({
+					windowId: obj.list[i]
+				}, function (tabs) {
 					for (var j = 0; j < tabs.length; j++) {
 						chrome.tabs.move(tabs[j].id, {
 							windowId: id,
@@ -429,274 +442,296 @@ function handler(func, obj) {
 	var type_func = func.split('_')[1];
 	getSelected();
 	var count = selected.list.length;
-	if (count > 0) {//If there are selected items
-		var tabs = [], list = selected.list;
+	if (count > 0) { //If there are selected items
+		var tabs = [],
+			list = selected.list;
 		for (var i = 0; i < list.length; i++) {
 			tabs.push(list[i]);
 		}
+		console.log(id, main_func, type_func);
 		switch (main_func) {
-			case 'close':
-				closeSelected();
-				break;
-			case 'create':
-				switch (type_func) {
-					case 'tab':
-						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.create({ windowId: tabs[i], selected: false });
-						}
-						break;
-					case 'tabLeft':
-						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.get(tabs[i], function (tab) {
-								chrome.tabs.create({
-									windowId: tab.windowId,
-									index: tab.index,
-									selected: false
-								});
-							});
-						}
-						break;
-					case 'tabRight':
-						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.get(tabs[i], function (tab) {
-								chrome.tabs.create({
-									windowId: tab.windowId,
-									index: tab.index + 1,
-									selected: false
-								});
-							});
-						}
-						break;
-					default: break;
+		case 'close':
+			closeSelected();
+			break;
+		case 'create':
+			switch (type_func) {
+			case 'tab':
+				for (var i = 0; i < tabs.length; i++) {
+					chrome.tabs.create({
+						windowId: tabs[i],
+						selected: false
+					});
 				}
 				break;
-			case 'reload':
-				reload();
+			case 'tabLeft':
+				for (var i = 0; i < tabs.length; i++) {
+					chrome.tabs.get(tabs[i], function (tab) {
+						chrome.tabs.create({
+							windowId: tab.windowId,
+							index: tab.index,
+							selected: false
+						});
+					});
+				}
 				break;
-			case 'pin':
-				togglePin(0);
+			case 'tabRight':
+				for (var i = 0; i < tabs.length; i++) {
+					chrome.tabs.get(tabs[i], function (tab) {
+						chrome.tabs.create({
+							windowId: tab.windowId,
+							index: tab.index + 1,
+							selected: false
+						});
+					});
+				}
 				break;
-			case 'unpin':
-				togglePin(-1);
+			default:
 				break;
-			case 'private':
-				PrivateSelected(0);
+			}
+			break;
+		case 'reload':
+			reload();
+			break;
+		case 'pin':
+			togglePin(0);
+			break;
+		case 'unpin':
+			togglePin(-1);
+			break;
+		case 'private':
+			PrivateSelected(0);
+			break;
+		case 'normal':
+			PrivateSelected(-1);
+			break;
+		case 'clone':
+			clone();
+			break;
+		case 'duplicate':
+			removeDuplicate();
+			break;
+		case 'split':
+			splitSelected(false);
+			break;
+		case 'reopen':
+			chrome.history.search({
+				text: '',
+				maxResults: 1
+			}, function (item) {
+				chrome.tabs.create({
+					url: item[0].url
+				});
+			});
+			break;
+		default:
+			break;
+		}
+	} else { //If no selected items
+		switch (main_func) {
+		case 'close':
+			switch (type_func) {
+			case 'tab':
+				chrome.tabs.remove(id);
 				break;
-			case 'normal':
-				PrivateSelected(-1);
+			case 'win':
+				chrome.windows.remove(id);
 				break;
-			case 'clone':
-				clone();
+			case 'tabLeft':
+				chrome.tabs.get(id, function (tab) {
+					chrome.tabs.query({
+						windowId: tab.windowId
+					}, function (tabs) {
+						for (var i = 0; i < tabs.length; i++) {
+							if (tabs[i].index < tab.index) {
+								chrome.tabs.remove(tabs[i].id);
+							}
+						}
+					});
+				});
 				break;
-			case 'duplicate':
-				removeDuplicate();
-				break;
-			case 'split':
-				splitSelected(false);
-				break;
-			case 'reopen':
-				chrome.history.search({
-					text: '',
-					maxResults: 1
-				}, function (item) {
-					chrome.tabs.create({
-						url: item[0].url
+			case 'tabRight':
+				chrome.tabs.get(id, function (tab) {
+					chrome.tabs.query({
+						windowId: tab.windowId
+					}, function (tabs) {
+						for (var i = 0; i < tabs.length; i++) {
+							if (tabs[i].index > tab.index) {
+								chrome.tabs.remove(tabs[i].id);
+							}
+						}
 					});
 				});
 				break;
 			default:
 				break;
-		}
-	} else {//If no selected items
-		switch (main_func) {
-			case 'close':
-				switch (type_func) {
-					case 'tab':
-						chrome.tabs.remove(id);
-						break;
-					case 'win':
-						chrome.windows.remove(id);
-						break;
-					case 'tabLeft':
-						chrome.tabs.get(id, function (tab) {
-							chrome.tabs.query({
-								windowId: tab.windowId
-							}, function (tabs) {
-								for (var i = 0; i < tabs.length; i++) {
-									if (tabs[i].index < tab.index) {
-										chrome.tabs.remove(tabs[i].id);
-									}
-								}
-							});
-						});
-						break;
-					case 'tabRight':
-						chrome.tabs.get(id, function (tab) {
-							chrome.tabs.query({
-								windowId: tab.windowId
-							}, function (tabs) {
-								for (var i = 0; i < tabs.length; i++) {
-									if (tabs[i].index > tab.index) {
-										chrome.tabs.remove(tabs[i].id);
-									}
-								}
-							});
-						});
-						break;
-					default: break;
-				}
+			}
+			break;
+		case 'create':
+			switch (type_func) {
+			case 'tab':
+				chrome.tabs.create({
+					windowId: id,
+					selected: false
+				});
 				break;
-			case 'create':
-				switch (type_func) {
-					case 'tab':
-						chrome.tabs.create({ windowId: id, selected: false });
-						break;
-					case 'window':
-						chrome.windows.create(function (win) {
-							chrome.windows.update(win.id, {
-								state: 'maximized'
-							});
-						});
-						break;
-					case 'winPrivate':
-						chrome.windows.create({
-							incognito: true
-						}, function (win) {
-							chrome.windows.update(win.id, {
-								state: 'maximized'
-							});
-						});
-						break;
-					case 'tabLeft':
-						chrome.tabs.get(id, function (tab) {
-							chrome.tabs.create({
-								windowId: tab.windowId,
-								index: tab.index,
-								selected: false
-							});
-						});
-						break;
-					case 'tabRight':
-						chrome.tabs.get(id, function (tab) {
-							chrome.tabs.create({
-								windowId: tab.windowId,
-								index: tab.index + 1,
-								selected: false
-							});
-						});
-						break;
-					default: break;
-				}
+			case 'window':
+				chrome.windows.create(function (win) {
+					chrome.windows.update(win.id, {
+						state: 'maximized'
+					});
+				});
 				break;
-			case 'reload':
-				if (type_func === 'tab') {
-					chrome.tabs.reload(id);
-				} else {
-					if (confirm('Are you sure you want to reload all tabs in this window?')) {
-						chrome.windows.get(id, { populate: true }, function (win) {
-							var tabs = win.tabs;
-							for (var i = 0; i < tabs.length; i++) {
-								chrome.tabs.reload(tabs[i].id);
-							}
+			case 'winPrivate':
+				chrome.windows.create({
+					incognito: true
+				}, function (win) {
+					chrome.windows.update(win.id, {
+						state: 'maximized'
+					});
+				});
+				break;
+			case 'tabLeft':
+				chrome.tabs.get(id, function (tab) {
+					chrome.tabs.create({
+						windowId: tab.windowId,
+						index: tab.index,
+						selected: false
+					});
+				});
+				break;
+			case 'tabRight':
+				chrome.tabs.get(id, function (tab) {
+					chrome.tabs.create({
+						windowId: tab.windowId,
+						index: tab.index + 1,
+						selected: false
+					});
+				});
+				break;
+			default:
+				break;
+			}
+			break;
+		case 'reload':
+			if (type_func === 'tab') {
+				chrome.tabs.reload(id);
+			} else {
+				if (confirm('Are you sure you want to reload all tabs in this window?')) {
+					chrome.windows.get(id, {
+						populate: true
+					}, function (win) {
+						var tabs = win.tabs;
+						for (var i = 0; i < tabs.length; i++) {
+							chrome.tabs.reload(tabs[i].id);
+						}
+					});
+				}
+			}
+			break;
+		case 'pin':
+			if (type_func !== 'win') {
+				chrome.tabs.update(id, {
+					pinned: true
+				});
+			} else {
+				chrome.windows.get(id, {
+					populate: true
+				}, function (win) {
+					var tabs = win.tabs;
+					for (var i = 0; i < tabs.length; i++) {
+						chrome.tabs.update(tabs[i].id, {
+							pinned: true
 						});
 					}
-				}
-				break;
-			case 'pin':
-				if (type_func !== 'win') {
-					chrome.tabs.update(id, { pinned: true });
-				} else {
-					chrome.windows.get(id, { populate: true }, function (win) {
-						var tabs = win.tabs;
-						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.update(tabs[i].id, {
-								pinned: true
-							});
-						}
-					});
-				}
-				break;
-			case 'unpin':
-				if (type_func !== 'win') {
-					chrome.tabs.update(id, { pinned: false });
-				} else {
-					chrome.windows.get(id, { populate: true }, function (win) {
-						var tabs = win.tabs;
-						for (var i = 0; i < tabs.length; i++) {
-							chrome.tabs.update(tabs[i].id, {
-								pinned: false
-							});
-						}
-					});
-				}
-				break;
-			case 'private':
-				makePrivate(id, true);
-				break;
-			case 'normal':
-				makePrivate(id, false);
-				break;
-			case 'clone':
-				if (type_func === 'tab') {
-					chrome.tabs.duplicate(id);
-				} else {
-					cloneWin(id);
-				}
-				break;
-			case 'duplicate':
-				removeDuplicateLocal(id);
-				break;
-			case 'split':
-				chrome.tabs.get(id, function (tab) {
-					chrome.windows.get(tab.windowId, function (win) {
-						if (win.incognito) {
-							chrome.windows.create({
-								url: tab.url,
-								incognito: true
-							}, function () {
-								chrome.tabs.remove(id);
-							});
-						} else {
-							chrome.windows.create(function (win) {
-								chrome.tabs.move(id, {
-									windowId: win.id,
-									index: -1
-								});
-								chrome.tabs.remove(win.tabs[0].id);
-							});
-						}
-					});
 				});
-				break;
-			case 'reopen':
-				chrome.history.search({
-					text: '',
-					maxResults: 1
-				}, function (item) {
-					chrome.tabs.create({
-						url: item[0].url
-					});
+			}
+			break;
+		case 'unpin':
+			if (type_func !== 'win') {
+				chrome.tabs.update(id, {
+					pinned: false
 				});
-				break;
-			default:
-				break;
+			} else {
+				chrome.windows.get(id, {
+					populate: true
+				}, function (win) {
+					var tabs = win.tabs;
+					for (var i = 0; i < tabs.length; i++) {
+						chrome.tabs.update(tabs[i].id, {
+							pinned: false
+						});
+					}
+				});
+			}
+			break;
+		case 'private':
+			makePrivate(id, true);
+			break;
+		case 'normal':
+			makePrivate(id, false);
+			break;
+		case 'clone':
+			if (type_func === 'tab') {
+				chrome.tabs.duplicate(id);
+			} else {
+				cloneWin(id);
+			}
+			break;
+		case 'duplicate':
+			removeDuplicateLocal(id);
+			break;
+		case 'split':
+			chrome.tabs.get(id, function (tab) {
+				chrome.windows.get(tab.windowId, function (win) {
+					if (win.incognito) {
+						chrome.windows.create({
+							url: tab.url,
+							incognito: true
+						}, function () {
+							chrome.tabs.remove(id);
+						});
+					} else {
+						chrome.windows.create(function (win) {
+							chrome.tabs.move(id, {
+								windowId: win.id,
+								index: -1
+							});
+							chrome.tabs.remove(win.tabs[0].id);
+						});
+					}
+				});
+			});
+			break;
+		case 'reopen':
+			chrome.history.search({
+				text: '',
+				maxResults: 1
+			}, function (item) {
+				chrome.tabs.create({
+					url: item[0].url
+				});
+			});
+			break;
+		default:
+			break;
 		}
 	}
 }
 
 function recentHandler(func, url) {
 	switch (func) {
-		case 'open_recent':
-			chrome.tabs.create({
-				url: url
-			});
-			break;
-		case 'delete_recent':
-			chrome.history.deleteUrl({
-				url: url
-			});
-			loadRecentClosed();
-			break;
-		default: break;
+	case 'open_recent':
+		chrome.tabs.create({
+			url: url
+		});
+		break;
+	case 'delete_recent':
+		chrome.history.deleteUrl({
+			url: url
+		});
+		loadRecentClosed();
+		break;
+	default:
+		break;
 	}
 }

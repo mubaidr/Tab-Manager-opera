@@ -1,4 +1,4 @@
-﻿body {
+body {
 	width: 400px;
 	margin: 0;
 	padding: 0;
@@ -10,7 +10,6 @@
 	-ms-user-select: none;
 	user-select: none;
 }
-
 h1 {
 	color: white;
 	text-align: center;
@@ -22,12 +21,10 @@ h1 {
 	background: #0286e9 url(../img/icon_128.png) 64px center no-repeat;
 	background-size: 32px;
 }
-
-	h1 > .version_info {
-		font-size: xx-small;
-		vertical-align: bottom;
-	}
-
+h1 > .version_info {
+	font-size: xx-small;
+	vertical-align: bottom;
+}
 h2 {
 	color: black;
 	text-align: center;
@@ -35,43 +32,32 @@ h2 {
 	margin: 0;
 	padding: 5px 0;
 }
-
 .subheading {
 	text-align: center;
 	vertical-align: middle;
 	padding: 5px 0;
 	height: 24px;
 }
-
-	.subheading .left {
-	}
-
-	.subheading button {
-		font-size: x-small;
-		border: none;
-		border-radius: 3px;
-		cursor: pointer;
-		background-color: white;
-		border: 1px solid rgba(2, 134, 233, 0.5);
-	}
-
-		.subheading button:hover {
-			background-color: rgba(2, 134, 233, 1);
-			color: white;
-		}
-
-h2.subhead {
+.subheading .left {} .subheading button {
+	font-size: x-small;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+	background-color: white;
+	border: 1px solid rgba(2, 134, 233, 0.5);
 }
-
-h3 {
-	color: rgba(0,0,0,0.7);
+.subheading button:hover {
+	background-color: rgba(2, 134, 233, 1);
+	color: white;
+}
+h2.subhead {} h3 {
+	color: rgba(0, 0, 0, 0.7);
 	text-align: center;
 	font-size: 0.7em;
 	font-weight: 600;
 	margin: 0;
 	padding: 2px 20px;
 }
-
 h4 {
 	color: #666666;
 	margin: 0;
@@ -80,33 +66,28 @@ h4 {
 	font-size: 1em;
 	font-weight: normal;
 	padding: 0 20px;
-	border: 1px solid rgba(0,0,0,.15);
+	border: 1px solid rgba(0, 0, 0, .15);
 	border-right: none;
 	transition: all 0.25s;
 	background-color: #f5f6f7;
 	border-top-color: #f5f6f7;
 }
-
-	h4:hover {
-		border-color: #0286e9;
-	}
-
+h4:hover {
+	border-color: #0286e9;
+}
 #container {
 	overflow: hidden;
 }
-
 .column {
 	height: 400px;
 }
-
 .left {
 	float: left;
 	width: 70%;
 	background-color: #fefefe;
 	overflow: hidden;
 }
-
-.toggle_column{
+.toggle_column {
 	display: none;
 	float: left;
 	font-size: small;
@@ -117,32 +98,26 @@ h4 {
 	cursor: pointer;
 	border-radius: 5px;
 }
-
 .right {
 	float: right;
 	width: calc(30% - 10px);
 	width: 30%;
 	background-color: white;
 }
-
 .bottom {
 	height: 25px;
 	padding: 0 5px;
 	background-color: white;
 }
-
-	.bottom > .left {
-		width: 80%;
-	}
-
-	.bottom > .right {
-		width: 20%;
-	}
-
+.bottom > .left {
+	width: 80%;
+}
+.bottom > .right {
+	width: 20%;
+}
 #info {
 	font-size: small;
 }
-
 #scroll_container {
 	max-width: 100%;
 	max-height: 100%;
@@ -150,11 +125,10 @@ h4 {
 	height: calc(100% - 12px);
 	border: 1px solid #b6b6b6;
 	border-radius: 3px 3px 3px 0;
-	box-shadow: 5px 0 5px -5px rgba(0,0,0,0.3);
+	box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3);
 	border-left: none;
 	overflow-x: hidden;
 }
-
 #tab_container {
 	margin: 0;
 	padding: 0;
@@ -162,47 +136,31 @@ h4 {
 	list-style: none;
 	font-family: Calibri;
 }
-
-	#tab_container li {
-		padding: 0;
-	}
-
-	#tab_container > li > h4 {
-	}
-
-	#tab_container ul {
-		padding-left: 16px;
-		list-style: none;
-	}
-
-		#tab_container ul li {
-		}
-
-		#tab_container ul > li h4 {
-			font-size: 0.9em;
-		}
-
-	#tab_container h4:hover {
-	}
-
-#tab_container_recent {
+#tab_container li {
+	padding: 0;
+}
+#tab_container > li > h4 {} #tab_container ul {
+	padding-left: 16px;
+	list-style: none;
+}
+#tab_container ul li {} #tab_container ul > li h4 {
+	font-size: 0.9em;
+}
+#tab_container h4:hover {} #tab_container_recent {
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	list-style: none;
 	font-family: Calibri;
 }
-
-	#tab_container_recent li {
-		padding: 0;
-	}
-
-	#tab_container_recent > li > h4 {
-		font-size: 0.9em;
-		background: url('../img/history.PNG') left center no-repeat;
-		background-size: 16px;
-	}
-
+#tab_container_recent li {
+	padding: 0;
+}
+#tab_container_recent > li > h4 {
+	font-size: 0.9em;
+	background: url('../img/history.PNG') left center no-repeat;
+	background-size: 16px;
+}
 #tab_container_bookmarks {
 	margin: 0;
 	padding: 0;
@@ -210,27 +168,40 @@ h4 {
 	list-style: none;
 	font-family: Calibri;
 }
-
-	#tab_container_bookmarks li {
-		padding: 0;
-	}
-
-	#tab_container_bookmarks > li > h4 {
-		font-size: 0.9em;
-	}
-	
+#tab_container_bookmarks li {
+	padding: 0;
+}
+#tab_container_bookmarks > li > h4 {
+	font-size: 0.9em;
+}
+#url_list_container {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style: none;
+	font-family: Calibri;
+}
+#url_list_container li {
+	padding: 0;
+}
+#url_list_container > li > textarea {
+	border: none;
+	box-shadow: none;
+	width: 380px;
+	height: 380px;
+	outline: none;
+}
 /*Tab,Windows status*/
+
 h4.selected {
 	border-color: #0286e9!important;
 	background-color: #0286e9!important;
 	box-shadow: 0 0 3px #0286e9;
 	color: white!important;
 }
-
 h4.focused {
 	color: #0f0f0f;
 }
-
 #action_container {
 	padding-top: 10px;
 	height: 370px;
@@ -238,119 +209,88 @@ h4.focused {
 	padding: 0 3px;
 	margin: 0;
 }
-
-	#action_container li {
-		display: inline;
-		padding: 0;
-		margin: 0;
-		clear: both;
-	}
-
-		#action_container li h3 {
-			/*padding-top: 10px;*/ clear: both;
-		}
-
-		#action_container li button {
-			font-size: 10px;
-			font-family: Calibri;
-			font-weight: bold;
-			width: 70%;
-			margin: 0;
-			margin-left: 15%;
-			padding: 2px 0;
-			color: #666666;
-			transition: all 0.25s;
-		}
-
-			#action_container li button:hover {
-				color: #0f0f0f;
-			}
-
-			#action_container li button.two {
-				float: left;
-				width: 50%;
-				margin: 0;
-			}
-
+#action_container li {
+	display: inline;
+	padding: 0;
+	margin: 0;
+	clear: both;
+}
+#action_container li h3 {
+	/*padding-top: 10px;*/
+	clear: both;
+}
+#action_container li button {
+	font-size: 10px;
+	font-family: Calibri;
+	width: 70%;
+	margin: 0;
+	margin-left: 15%;
+}
+#action_container li button.two {
+	float: left;
+	width: 50%;
+	margin: 0;
+}
 .link {
 	float: right;
 }
-
-	.link a {
-		width: 16px;
-		height: 16px;
-	}
-
-		.link a img {
-			width: 16px;
-			height: 16px;
-			opacity: 0.75;
-			transition: opacity 0.25s;
-		}
-
-		.link a:hover img {
-			opacity: 1;
-		}
-
+.link a {
+	width: 16px;
+	height: 16px;
+}
+.link a img {
+	width: 16px;
+	height: 16px;
+	opacity: 0.75;
+	transition: opacity 0.25s;
+}
+.link a:hover img {
+	opacity: 1;
+}
 .clear {
 	clear: both;
 }
-
-h3 {
+h3 {} h3.new {
+	background: url(../img/tab.png) left center no-repeat;
 }
-
-	h3.new {
-		background: url(../img/tab.png) left center no-repeat;
-	}
-
-	h3.close {
-		background: url(../img/close.png) left center no-repeat;
-	}
-
-	h3.reload {
-		background: url(../img/reload.png) left center no-repeat;
-	}
-
-	h3.pin {
-		background: url(../img/pin.png) left center no-repeat;
-	}
-
-	h3.private {
-		background: url(../img/private.png) left center no-repeat;
-	}
-
-	h3.move {
-		background: url(../img/move.png) left center no-repeat;
-	}
-
-	h3.clone {
-		background: url(../img/clone.png) left center no-repeat;
-	}
-
-	h3.duplicate {
-		background: url(../img/duplicate.png) left center no-repeat;
-	}
-
+h3.close {
+	background: url(../img/close.png) left center no-repeat;
+}
+h3.reload {
+	background: url(../img/reload.png) left center no-repeat;
+}
+h3.pin {
+	background: url(../img/pin.png) left center no-repeat;
+}
+h3.private {
+	background: url(../img/private.png) left center no-repeat;
+}
+h3.move {
+	background: url(../img/move.png) left center no-repeat;
+}
+h3.clone {
+	background: url(../img/clone.png) left center no-repeat;
+}
+h3.duplicate {
+	background: url(../img/duplicate.png) left center no-repeat;
+}
 /*Scroll bar*/
+
 ::-webkit-scrollbar {
 	width: 5px!important;
 	height: 5px!important;
 }
-
-	::-webkit-scrollbar:hover {
-		background: #bababc!important;
-	}
-
+::-webkit-scrollbar:hover {
+	background: #bababc!important;
+}
 ::-webkit-scrollbar-thumb {
 	background: rgba(0, 0, 0, .30)!important;
 	border: 0;
 	border-radius: 5px;
 }
-
-	::-webkit-scrollbar-thumb:hover {
-		background: rgba(0, 0, 0, .50)!important;
-	}
-
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, .50)!important;
+}
 ::-webkit-scrollbar-corner {
-	background-color: rgba(0,0,0,0);
+	background-color: rgba(0, 0, 0, 0);
 }

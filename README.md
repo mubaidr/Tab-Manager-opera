@@ -22,6 +22,3 @@ A add-on for Opera 15+, to easily manage Tabs/Windows.
 	<li>Close tabs to the left or to the right of selcted tab</li>
 	<li>and much more to come</li>
 </ul>
-
-<B>Support/Discussion:</B>
-<a href="http://my.opera.com/mubaidr/blog/">http://my.opera.com/mubaidr/blog/</a>
