@@ -26,7 +26,6 @@
 				"default" : "Ctrl+M",
 				"windows" : "Ctrl+M",
 				"mac" : "Command+M",
-				"chromeos" : "Ctrl+M",
 				"linux" : "Ctrl+M"
 			}
 		}
