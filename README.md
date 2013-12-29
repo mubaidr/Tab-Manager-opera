@@ -5,6 +5,7 @@ Tab-Manager-opera
 A add-on for Opera 15+, to easily manage Tabs/Windows.
 <ul>
 	<li>Display all Tabs (URL on mouse hover) & Windows</li>
+	<li>Display all URLs in simple list</li>
 	<li>Split Selected tabs to new Window</li>
 	<li>Merge multiple windows into one</li>
 	<li>Switch to any Tab/Window by Double Click</li>

@@ -292,7 +292,7 @@ function showCurrentTabs(check) {
 		$('#tab_container').hide();
 		$('#url_list_container').show();
 		$('#tab_container_recent').hide();
-		$('#info').html('Copy urls to clipboard.');
+		$('#info').html('URL list from all tabs.');
 		loadURLList();
 		break;
 	default:
