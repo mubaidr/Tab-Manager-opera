@@ -507,6 +507,13 @@ function setupContextMenu() {
 				callback: function (key, opt) {
 					handler(key, opt.$trigger.attr("id"));
 				}
+			},
+			"sep5": "---------",
+			lock_tab: {
+				name: "Lock",
+				callback: function (key, opt) {
+					handler(key, opt.$trigger.attr("id"));
+				}
 			}
 		}
 	});

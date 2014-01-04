@@ -16,17 +16,21 @@ chrome.windows.onCreated.addListener(function () {
 chrome.windows.onRemoved.addListener(function () {
 	sendMessage();
 });
-chrome.runtime.onInstalled.addListener(function () {	
+chrome.runtime.onInstalled.addListener(function () {
 	chrome.browserAction.setBadgeBackgroundColor({
 		color: [0, 114, 198, 255]
 	});
-	/*
-	chrome.tabs.create({
-		url: '../html/help.html'
-	});
-	*/
 	setText();
 });
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	if (request.type === 'lock') {
+		//Insert onbefore window unload function to tab
+		var script = 'window.onbeforeunload = function(){return "You locked this tab."};';
+		chrome.tabs.executeScript(request.tabId, {code: script});
+	}
+});
+
 function sendMessage() {
 	var views = chrome.extension.getViews({
 		type: 'popup'
@@ -38,8 +42,9 @@ function sendMessage() {
 	}
 	setText();
 }
+
 function setText() {
-	chrome.windows.getAll(function (wins) {		
+	chrome.windows.getAll(function (wins) {
 		chrome.tabs.query({}, function (tabs) {
 			chrome.browserAction.setBadgeText({
 				text: tabs.length.toString()

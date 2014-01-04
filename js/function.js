@@ -528,6 +528,12 @@ function handler(func, obj) {
 		}
 	} else { //If no selected items
 		switch (main_func) {
+		case 'lock':
+			chrome.runtime.sendMessage({
+				type: 'lock',
+				tabId: id
+			});
+			break;
 		case 'close':
 			switch (type_func) {
 			case 'tab':
