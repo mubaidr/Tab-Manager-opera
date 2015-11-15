@@ -136,21 +136,65 @@ function showStatus(object, type, parent_id) {
 	}
 }
 
+function getWindowByTab(tab_node) {
+	return tab_node.parentNode.parentNode.parentNode.children[0];
+}
+
+function selectRange(from, to) {
+	if (from.type !== to.type)
+		if (to.type === 'Window')
+			from = getWindowByTab(from);
+		else
+			to = getWindowByTab(to);
+	var arr;
+	if (from.parentNode.parentNode === to.parentNode.parentNode)
+		arr = to.parentNode.parentNode.children;
+	else {
+		var windows = $('#tab_container').children();
+		arr = [];
+		for (var i = 0; i < windows.length; ++i)
+			arr = arr.concat([].slice.call(windows[i].childNodes[1].children));
+	}
+	$('h4').removeClass('selected');
+	var last_id = null;
+	for (var i = 0; i < arr.length; ++i) {
+		var cur = arr[i].childNodes[0];
+		if (!last_id && (cur.id == from.id || cur.id == to.id))
+			last_id = cur.id == from.id ? to.id : from.id;
+		if (last_id) {
+			cur.classList.add('selected');
+			if (cur.id == last_id)
+				break;
+		}
+	}
+}
+
 function attachEvents(item) {
 	$(item).on('click', function () {
-		var tab = event.target;
+		var clicked = event.target;
 		if (!activeMove) {
-			if (tab.type !== prev_type) {
-				prev_type = tab.type;
-				$('h4').removeClass('selected');
-			}
-			$(tab).toggleClass('selected');
-		} else {
-			if (tab.type === 'Window') {
-				splitSelected(true, tab.id);
-				activeMove = false;
+			if (event.shiftKey) {
+				if (last_toggled)
+					selectRange(last_toggled, clicked);
+				else
+					chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+						last_toggled = $('#' + tabs[0].id)[0];
+						selectRange(last_toggled, clicked);
+					});
 			} else {
-				alert("Please select Window.");
+				if (last_toggled && clicked.type !== last_toggled.type) {
+					$('h4').removeClass('selected');
+				}
+				last_toggled = clicked;
+				$(clicked).toggleClass('selected');
+			}
+		} else {
+			if (clicked.type === 'Window') {
+				splitSelected(true, clicked.id);
+				activeMove = false;
+				resetInfo();
+			} else {
+				alert("Please select a window.");
 			}
 		}
 	});
@@ -163,6 +207,7 @@ function actionEvents() {
 	$('#action_container button').on('click', function () {
 		getSelected();
 		activeMove = false;
+		resetInfo();
 		var id = event.target.id;
 		switch (id) {
 		case 'btn_Split':
@@ -327,14 +372,22 @@ function loadRecentClosed() {
 
 function loadBookmarks() {}
 
+function resetInfo() {
+	$('#info').html('Welcome to Easy Tab Manager!').css('font-weight', 'normal');
+}
+
 function tooltipEvents() {
 	$('#action_container button').on('mouseover', function () {
-		$('#info').html($(this).attr('title'));
-		$(this).attr('title', '');
+		if (!activeMove) {
+			$('#info').html($(this).attr('title'));
+			$(this).attr('title', '');
+		}
 	});
 	$('#action_container button').on('mouseleave', function () {
-		$(this).attr('title', $('#info').html());
-		$('#info').html('Welcome to Easy Tab Manager!');
+		if (!activeMove) {
+			$(this).attr('title', $('#info').html());
+			resetInfo();
+		}
 	});
 	$('.link a').on('mouseover', function () {
 		$('#info').html($(this).attr('title'));
