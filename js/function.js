@@ -1,4 +1,4 @@
-var prev_type = 'undefined',
+var last_toggled = null,
 	selected = {
 		'type': 'undefined',
 		'list': []
@@ -34,9 +34,9 @@ function restoreSelected() {
 
 function deSelect(reset) {
 	if (reset !== true) {
-		selected.type = prev_type;
+		selected.type = last_toggled ? last_toggled.type : 'undefined';
 	} else {
-		prev_type = 'undefined';
+		last_toggled = null;
 		selected.type = 'undefined';
 	}
 	selected.list.length = 0;
@@ -253,7 +253,7 @@ function splitSelected(parent, id) {
 			var old_win_id, temp = [],
 				tab;
 			chrome.windows.get(id, function (new_win) {
-				for (var i = 0; i < tab_ids.length; i++) {
+				for (var i = tab_ids.length - 1; i >= 0; i--) {
 					old_win_id = parseInt($('#' + tab_ids[i]).parent().parent().parent().attr('id').split('_')[0], 10);
 					temp.push(tab_ids[i]);
 					chrome.windows.get(old_win_id, function (old_win) {
@@ -283,7 +283,7 @@ function splitSelected(parent, id) {
 
 function moveto() {
 	activeMove = true;
-	alert("Please select target Window");
+	$('#info').html("Please select target Window").css('font-weight', 'bold');
 }
 
 function reload(bool) {
