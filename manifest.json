@@ -18,7 +18,7 @@
 		"scripts" : ["js/background.js"],
 		"persistent" : false
 	},
-	"version" : "1.15",
+	"version" : "1.20.0",
 	"manifest_version" : 2,
 	"commands" : {
 		"_execute_browser_action" : {

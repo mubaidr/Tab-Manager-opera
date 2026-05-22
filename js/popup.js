@@ -5,6 +5,22 @@ document.onready = function () {
 	tooltipEvents();
 };
 
+// Debounce utility for search input
+function debounce(func, wait) {
+  var timeout;
+  return function() {
+    var context = this;
+    var args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      func.apply(context, args);
+    }, wait);
+  };
+}
+
+// Wire up search input with debounce
+$(document).on('input', '#search_input', debounce(filterTabs, 150));
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	if (request.type === 'reload') {
 		loadData();
@@ -51,7 +67,8 @@ function addToList(object, type, parent_id) {
 		li.id = object.id + '_lit';
 		$(h4).addClass('tab');
 		h4.title = object.url;
-		$(h4).html(object.title);
+		$(h4).text(object.title);
+		$(h4).attr('data-url', object.url);
 		$('#' + parent_id + '_liw ul').append(li);
 		break;
 	case 'URL':
@@ -96,41 +113,47 @@ function showStatus(object, type, parent_id) {
 				'background-image': 'url(../img/window.png)'
 			});
 		}
+		item.css({
+			'background-position': '2px center, right center',
+			'background-repeat': 'no-repeat',
+			'background-size': '14px 14px'
+		});
 	} else {
-		if (object.pinned) {
-			if (object.url !== 'opera://startpage/') {
-				item.css({
-					'background-image': 'url(' + object.favIconUrl + '), url(../img/pin.png)'
-				});
-			} else {
-				item.css({
-					'background-image': 'url(../img/tab.png), url(../img/pin.png)'
-				});
-			}
+		// Clear any existing favicon
+		item.find('.favicon').remove();
+
+		var faviconSrc;
+		var isPinned = object.pinned;
+		var isStartPage = object.url === 'opera://startpage/';
+		var isOperaProtocol = object.url && object.url.split(':')[0] === 'opera';
+
+		if (isPinned && !isStartPage) {
+			faviconSrc = object.favIconUrl || '../img/tab.png';
+		} else if (isPinned && isStartPage) {
+			faviconSrc = '../img/tab.png';
+		} else if (!isStartPage && isOperaProtocol) {
+			faviconSrc = '../img/opera.png';
+		} else if (!isStartPage) {
+			faviconSrc = object.favIconUrl || '../img/tab.png';
 		} else {
-			if (object.url !== 'opera://startpage/') {
-				if (object.url.split(':')[0] === 'opera') {
-					item.css({
-						'background-image': 'url(../img/opera.png)'
-					});
-				} else {
-					item.css({
-						'background-image': 'url(' + object.favIconUrl + ')'
-					});
-				}
-			} else {
-				item.css({
-					'background-image': 'url(../img/tab.png)'
-				});
-			}
+			faviconSrc = '../img/tab.png';
 		}
 
+		var img = document.createElement('img');
+		img.className = 'favicon';
+		img.src = faviconSrc;
+		img.alt = '';
+		img.onerror = function() { this.src = '../img/tab.png'; };
+		item.prepend(img);
+
+		// Toggle pinned class on parent li
+		var $li = item.parent();
+		if (isPinned) {
+			$li.addClass('pinned');
+		} else {
+			$li.removeClass('pinned');
+		}
 	}
-	item.css({
-		'background-position': '2px center, right center',
-		'background-repeat': 'no-repeat',
-		'background-size': '14px 14px'
-	});
 	if (object.focused || object.selected) {
 		item.addClass('focused');
 	}
@@ -309,6 +332,12 @@ function actionEvents() {
 function showCurrentTabs(check) {
 	switch (check) {
 	case true:
+		// Clear search state when switching to Current Tabs
+		$('#search_input').val('');
+		clearHighlights();
+		$('#no-match-message').hide();
+		$('#tab_container ul li > h4.tab').parent().show();
+		$('#tab_container > li').show();
 		$('.column.right').show();
 		$('#scroll_container').parent().css({
 			width: '70%'
@@ -316,6 +345,7 @@ function showCurrentTabs(check) {
 		$('#tab_container').show();
 		$('#tab_container_recent').hide();
 		$('#url_list_container').hide();
+		$('.search-container').show();
 		$('#info').html("Welcome to Easy Tab Manager!");
 		break;
 	case false:
@@ -326,6 +356,7 @@ function showCurrentTabs(check) {
 		$('#tab_container').hide();
 		$('#tab_container_recent').show();
 		$('#url_list_container').hide();
+		$('.search-container').hide();
 		$('#info').html('Double click to restore a tab.');
 		loadRecentClosed();
 		break;
@@ -337,6 +368,7 @@ function showCurrentTabs(check) {
 		$('#tab_container').hide();
 		$('#url_list_container').show();
 		$('#tab_container_recent').hide();
+		$('.search-container').hide();
 		$('#info').html('URL list from all tabs.');
 		loadURLList();
 		break;
@@ -379,6 +411,8 @@ function resetInfo() {
 function tooltipEvents() {
 	$('#action_container button').on('mouseover', function () {
 		if (!activeMove) {
+			// Save current info text (might be search count) before showing tooltip
+			$(this).data('saved-info', $('#info').text());
 			$('#info').html($(this).attr('title'));
 			$(this).attr('title', '');
 		}
@@ -386,16 +420,21 @@ function tooltipEvents() {
 	$('#action_container button').on('mouseleave', function () {
 		if (!activeMove) {
 			$(this).attr('title', $('#info').html());
-			resetInfo();
+			// Restore saved info text (search count or welcome message)
+			var saved = $(this).data('saved-info');
+			$('#info').html(saved || 'Welcome to Easy Tab Manager!');
 		}
 	});
 	$('.link a').on('mouseover', function () {
+		// Save current info text before showing tooltip
+		$(this).data('saved-info', $('#info').text());
 		$('#info').html($(this).attr('title'));
 		$(this).attr('title', '');
 	});
 	$('.link a').on('mouseleave', function () {
 		$(this).attr('title', $('#info').html());
-		$('#info').html('Welcome to Easy Tab Manager!');
+		var saved = $(this).data('saved-info');
+		$('#info').html(saved || 'Welcome to Easy Tab Manager!');
 	});
 	$('.link a').on('click', function () {
 		chrome.tabs.create({
@@ -588,4 +627,106 @@ function setupContextMenu() {
 			}
 		}
 	});
+}
+
+/* Highlight functions for search */
+function escapeRegex(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function highlightText(element, term) {
+  // Preserve favicon img element
+  var favicon = element.querySelector('.favicon');
+
+  if (!element.hasAttribute('data-original-text')) {
+    element.setAttribute('data-original-text', element.textContent);
+  }
+  if (!term || term.length < 1) {
+    // Restore original text, remove marks
+    element.textContent = element.getAttribute('data-original-text') || element.textContent;
+    if (favicon) element.prepend(favicon);
+    return;
+  }
+  var original = element.getAttribute('data-original-text') || element.textContent;
+  var regex = new RegExp('(' + escapeRegex(term) + ')', 'gi');
+  var parts = original.split(regex);
+  element.innerHTML = '';
+  for (var i = 0; i < parts.length; i++) {
+    var part = parts[i];
+    if (part.toLowerCase() === term.toLowerCase()) {
+      var mark = document.createElement('mark');
+      mark.className = 'highlight-match';
+      mark.textContent = part;
+      element.appendChild(mark);
+    } else {
+      element.appendChild(document.createTextNode(part));
+    }
+  }
+  // Restore favicon at the beginning
+  if (favicon) element.prepend(favicon);
+}
+
+function clearHighlights() {
+  $('h4[data-original-text]').each(function() {
+    var favicon = this.querySelector('.favicon');
+    this.textContent = this.getAttribute('data-original-text');
+    if (favicon) this.prepend(favicon);
+    this.removeAttribute('data-original-text');
+  });
+}
+
+function filterTabs() {
+  // Ensure no-match-message element exists
+  if ($('#no-match-message').length === 0) {
+    $('<li id="no-match-message">No tabs match your search.</li>').appendTo('#tab_container');
+  }
+
+  var term = $('#search_input').val().trim().toLowerCase();
+  var $tabs = $('#tab_container ul li > h4.tab');
+  var matchCount = 0;
+  var totalCount = $tabs.length;
+
+  if (term.length === 0) {
+    $tabs.each(function() { $(this).parent().show(); });
+    $('#tab_container > li').show();
+    $('#no-match-message').hide();
+    clearHighlights();
+    $('#info').text('Welcome to Easy Tab Manager!');
+    return;
+  }
+
+  $tabs.each(function() {
+    var $h4 = $(this);
+    var title = $h4.text().toLowerCase();
+    var url = ($h4.attr('data-url') || '').toLowerCase();
+    var matches = title.indexOf(term) !== -1 || url.indexOf(term) !== -1;
+
+    if (matches) {
+      $h4.parent().show();
+      matchCount++;
+      highlightText(this, term);
+    } else {
+      $h4.parent().hide();
+    }
+  });
+
+  // Hide/show windows with no visible tabs
+  $('#tab_container > li').each(function() {
+    var $win = $(this);
+    var visibleTabs = $win.find('ul > li:visible').length;
+    if (visibleTabs === 0) {
+      $win.hide();
+    } else {
+      $win.show();
+    }
+  });
+
+  // Show/hide no-match-message
+  if (matchCount === 0) {
+    $('#no-match-message').show();
+    $('#info').text('No tabs match your search.');
+  } else {
+    $('#no-match-message').hide();
+    $('#info').text(matchCount + ' of ' + totalCount + ' tabs shown');
+  }
 }
